@@ -72,7 +72,7 @@ public class RacketList {
     public boolean saveRackets() {
         try {
             mSerializer.saveRackets(mRackets);
-            Log.d(TAG, "saveRackets()");
+            //Log.d(TAG, "saveRackets()");
             return true;
         } catch (Exception e) {
             Log.e(TAG, "Error saving Rackets: " + e);

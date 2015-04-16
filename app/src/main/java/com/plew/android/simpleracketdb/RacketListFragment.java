@@ -77,7 +77,7 @@ public class RacketListFragment extends Fragment {
     public RacketListFragment() {
         // Required empty public constructor
 
-        Log.d(TAG, "RacketListFragment(): ");
+        //Log.d(TAG, "RacketListFragment(): ");
     }
 
     @Override
@@ -110,7 +110,7 @@ public class RacketListFragment extends Fragment {
         mRacketListAddButton = (Button)v.findViewById(R.id.button_racketListAdd);
         mRacketListAddButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d(TAG, "onClick(): mRacketListAddButton");
+                //Log.d(TAG, "onClick(): mRacketListAddButton");
 
                 Racket racket = new Racket();
                 RacketList.get(getActivity()).addRacket(racket);
@@ -134,7 +134,7 @@ public class RacketListFragment extends Fragment {
 
                 Racket c = (Racket)(racket_adapter.getItem(position));
                 //Racket c = mRackets.get(position);      // this does not use the racket_adapter
-                Log.d(TAG, "onItemClick(): " + c.getName());
+                //Log.d(TAG, "onItemClick(): " + c.getName());
 
                 Intent i = new Intent(getActivity(), RacketActivity.class);
                 i.putExtra(RacketFragment.EXTRA_RACKET_ID, c.getId());

@@ -25,7 +25,7 @@ public class RacketListActivity extends ActionBarActivity {
         // Orig: }
 
         // Peter: code above did not work.  Following from CrimeActivity.java, chapter 8
-        Log.d(TAG, "onCreate(): ");
+        //Log.d(TAG, "onCreate(): ");
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
 

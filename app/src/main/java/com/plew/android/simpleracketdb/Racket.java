@@ -3,6 +3,7 @@ package com.plew.android.simpleracketdb;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ public class Racket {
     private static final String JSON_RACKET_STRINGPATTERN = "racket_stringpattern";
     private static final String JSON_RACKET_STRINGTENSION = "racket_stringtension";
     private static final String JSON_RACKET_COMMENTS = "racket_comments";
-    private static final String JSON_RACKET_NUMSTRNGDATA = "racket_numstrngdata";
+    private static final String JSON_RACKET_STRNGDATA = "racket_strngdata";
 
     private static int count = 0;   // counter used for testing
 
@@ -101,7 +102,7 @@ public class Racket {
     }
 
     public Racket(JSONObject json) throws JSONException {
-        Log.d(TAG, "Racket(JSONObject json): ");
+        //Log.d(TAG, "Racket(JSONObject json): ");
         mId = UUID.fromString(json.getString(JSON_RACKET_ID));
         mDate = new Date(json.getLong(JSON_RACKET_DATE));
 
@@ -125,17 +126,11 @@ public class Racket {
         mStringTension = json.getString(JSON_RACKET_STRINGTENSION);
         mComments = json.getString(JSON_RACKET_COMMENTS);
 
-        int count = json.getInt(JSON_RACKET_NUMSTRNGDATA);
-        Log.d(TAG, "Racket(JSONObject json): count:" + count);
+        JSONArray jsonStrngDataArray = json.getJSONArray(JSON_RACKET_STRNGDATA);
         mStrngDatas = new ArrayList<StrngData>();  // Peter
-        // parse the JSON using JSONTokener
-        //JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
-        // build the array of Rackets from JSONObjects
-        //for (int i = 0; i < array.length(); i++) {     // array.length()
-        //    mStrngDatas.add(new StrngData(json);
-        //}
-        for (int i = 0; i < count; i++) {
-            StrngData c = new StrngData(json);
+        for (int i = 0; i < jsonStrngDataArray.length(); i++) {
+            JSONObject jsonStrngDataObj = jsonStrngDataArray.getJSONObject(i);
+            StrngData c = new StrngData(jsonStrngDataObj);
             mStrngDatas.add(c);
         }
         Log.d(TAG, "Racket(JSONObject json): mStrngDatas.size():" + mStrngDatas.size());
@@ -143,7 +138,7 @@ public class Racket {
     }
 
     public JSONObject toJSON() throws JSONException {
-        Log.d(TAG, "toJSON(): ");
+        //Log.d(TAG, "toJSON(): ");
         JSONObject json = new JSONObject();
 
         json.put(JSON_RACKET_ID, mId.toString());
@@ -169,15 +164,13 @@ public class Racket {
         json.put(JSON_RACKET_STRINGTENSION, mStringTension);
         json.put(JSON_RACKET_COMMENTS, mComments);
 
-        int count = mStrngDatas.size();
-        json.put(JSON_RACKET_NUMSTRNGDATA, count);
-        //for (StrngData c : mStrngDatas) {
-        //    json.put(c.toJSON());
-        //}
-        for (int i = 0; i < count; i++) {
-            StrngData c = mStrngDatas.get(i);
-            c.toJSON(json);
+        // Add Strings - need json array to hold the list
+        JSONArray jsonStrngDataArray = new JSONArray();
+        for (StrngData c : mStrngDatas) {
+            JSONObject jsonStrngDataObj = c.toJSON();
+            jsonStrngDataArray.put(jsonStrngDataObj);
         }
+        json.put(JSON_RACKET_STRNGDATA, jsonStrngDataArray);
 
         return json;
     }
@@ -380,12 +373,12 @@ public class Racket {
 
     public void addStrngData(StrngData c) {
         mStrngDatas.add(c);
-        // not sure how to call: RacketList.get(getActivity()).saveRackets();
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
     }
 
     public void deleteStrngData(StrngData c) {
         mStrngDatas.remove(c);
-        // not sure how to call: RacketList.get(getActivity()).saveRackets();
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
     }
 
     public ArrayList<StrngData> getStrngDatas() {

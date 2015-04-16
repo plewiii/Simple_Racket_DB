@@ -101,7 +101,7 @@ public class StrngDataFragment extends Fragment {
     public StrngDataFragment() {
         // Required empty public constructor
 
-        Log.d(TAG, "StrngDataFragment(): ");
+        //Log.d(TAG, "StrngDataFragment(): ");
     }
 
     // chapter 10: flexible method: public static StrngDataFragment newInstance(UUID stringdataId) {
@@ -180,7 +180,7 @@ public class StrngDataFragment extends Fragment {
                 //dialog.setTargetFragment(StringDataFragment.this, REQUEST_DATE);
                 //dialog.show(fm, DIALOG_DATE);
 
-                Log.d(TAG, "onClick(): mDateButton");
+                //Log.d(TAG, "onClick(): mDateButton");
 
                 FragmentManager fm = getActivity()
                         .getSupportFragmentManager();
@@ -266,7 +266,7 @@ public class StrngDataFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause()");
+        //Log.d(TAG, "onPause()");
         super.onPause();
         RacketList.get(getActivity()).saveRackets();
     }

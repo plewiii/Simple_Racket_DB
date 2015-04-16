@@ -27,7 +27,7 @@ public class RacketActivity extends ActionBarActivity {
         // Orig: }
 
         // Peter: code above did not work.  Following from CrimeActivity.java, chapter 8
-        Log.d(TAG, "onCreate(): ");
+        //Log.d(TAG, "onCreate(): ");
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
 
@@ -65,7 +65,7 @@ public class RacketActivity extends ActionBarActivity {
     // not needed: @Override
     //protected Fragment createFragment() {
     protected Fragment createFragment() {
-        Log.d(TAG, "createFragment(): ");
+        //Log.d(TAG, "createFragment(): ");
         UUID racketId = (UUID)getIntent()
                 .getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);
         return RacketFragment.newInstance(racketId);

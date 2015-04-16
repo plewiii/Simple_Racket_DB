@@ -107,7 +107,7 @@ public class RacketFragment extends Fragment {
     public RacketFragment() {
         // Required empty public constructor
 
-        Log.d(TAG, "RacketFragment(): ");
+        //Log.d(TAG, "RacketFragment(): ");
     }
 
     // chapter 10: flexible method:
@@ -115,7 +115,7 @@ public class RacketFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_RACKET_ID, racketId);
 
-        Log.d(TAG, "newInstance");
+        //Log.d(TAG, "newInstance");
 
         RacketFragment fragment = new RacketFragment();
         fragment.setArguments(args);
@@ -125,7 +125,7 @@ public class RacketFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate(): ");
+        //Log.d(TAG, "onCreate(): ");
         super.onCreate(savedInstanceState);
         // Orig: if (getArguments() != null) {
         // Orig:     mParam1 = getArguments().getString(ARG_PARAM1);
@@ -151,7 +151,7 @@ public class RacketFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView(): ");
+        //Log.d(TAG, "onCreateView(): ");
         // Orig: TextView textView = new TextView(getActivity());
         // Orig: textView.setText(R.string.hello_blank_fragment);
         /// Orig: return textView;
@@ -256,7 +256,7 @@ public class RacketFragment extends Fragment {
 
                 StrngData c = (StrngData)(strngdata_adapter.getItem(position));
                 //StrngData c = mStrngDatas.get(position);      // this does not use the strngdata_adapter
-                Log.d(TAG, "onItemClick(): " + c.getName());
+                //Log.d(TAG, "onItemClick(): " + c.getName());
 
                 Intent i = new Intent(getActivity(), StrngDataActivity.class);
                 i.putExtra(StrngDataFragment.EXTRA_RACKET_ID, mRacket.getId());
@@ -356,7 +356,7 @@ public class RacketFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.d(TAG, "onPause()");
+        //Log.d(TAG, "onPause()");
         super.onPause();
         RacketList.get(getActivity()).saveRackets();
     }

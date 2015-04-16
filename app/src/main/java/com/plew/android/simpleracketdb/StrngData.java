@@ -72,7 +72,7 @@ public class StrngData {
     }
 
     public StrngData(JSONObject json) throws JSONException {
-        Log.d(TAG, "StrngData(JSONObject json): ");
+        //Log.d(TAG, "StrngData(JSONObject json): ");
         mId = UUID.fromString(json.getString(JSON_STRNG_ID));
         mDate = new Date(json.getLong(JSON_STRNG_DATE));
 
@@ -90,9 +90,9 @@ public class StrngData {
         mComments = json.getString(JSON_STRNG_COMMENTS);
     }
 
-    public JSONObject toJSON(JSONObject json) throws JSONException {
-        Log.d(TAG, "toJSON(): ");
-        //JSONObject json = new JSONObject();  // don't need because it is passed in
+    public JSONObject toJSON() throws JSONException {
+        //Log.d(TAG, "toJSON(): ");
+        JSONObject json = new JSONObject();
 
         json.put(JSON_STRNG_ID, mId.toString());
         json.put(JSON_STRNG_DATE, mDate.getTime());

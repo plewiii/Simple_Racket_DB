@@ -1,6 +1,7 @@
 package com.plew.android.simpleracketdb;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +63,7 @@ public class RacketJSONSerializer {
     }
 
     public void saveRackets(ArrayList<Racket> rackets) throws JSONException, IOException {
-        //Log.d(TAG, "RacketJSONSerializer(): calling saveRackets()");
+        Log.d(TAG, "RacketJSONSerializer(): calling saveRackets()");
 
         // build an array in JSON
         JSONArray array = new JSONArray();
