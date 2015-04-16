@@ -1,0 +1,229 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".RacketActivity$PlaceholderFragment">
+
+    <TableRow
+        android:id="@+id/tableRow_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_NameLabel"
+            android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_name"
+            android:layout_column="1"
+            android:layout_span="4"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_Date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_DateLabel"
+            android:text="Date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button android:id="@+id/stringdata_date"
+                android:layout_column="1"
+                android:layout_span="4"/>
+
+    </TableRow>
+
+    <!-- just draw a black line -->
+    <View
+        android:layout_height="2dip"
+        android:background="#000000" />
+
+    <TableRow
+        android:id="@+id/tableRow_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_MainsLabel"
+            android:layout_column="1"
+            android:text="Mains"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/textView_CrossesLabel"
+            android:layout_column="3"
+            android:text="Crosses"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_StringMfgModel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_StringLabel"
+            android:text="Mfg/Model"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_main_mfgmodel"
+            android:layout_column="1"
+            android:layout_span="2"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_cross_mfgmodel"
+            android:layout_column="3"
+            android:layout_span="2"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_Gauge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_GaugeLabel"
+            android:text="Gauge"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_main_gauge"
+            android:layout_column="1"
+            android:inputType="number"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_cross_gauge"
+            android:layout_column="3"
+            android:inputType="number"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_Tension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_TensionLabel"
+            android:text="Tension"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_main_tension"
+            android:layout_column="1"
+            android:inputType="number"
+            android:ems="4"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RadioGroup
+            android:id="@+id/checkbox_MainsTensionUnits"
+            android:layout_column="2"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/stringdata_main_tension_units_lbs"
+                android:text="lbs"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/stringdata_main_tension_units_kg"
+                android:text="kg"/>
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/stringdata_cross_tension"
+            android:layout_column="3"
+            android:inputType="number"
+            android:ems="4"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <RadioGroup
+            android:id="@+id/checkbox_CrossesTensionUnits"
+            android:layout_column="4"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/stringdata_cross_tension_units_lbs"
+                android:text="lbs"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/stringdata_cross_tension_units_kg"
+                android:text="kg"/>
+
+        </RadioGroup>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_Prestretch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_PrestretchLabel"
+            android:text="Prestretch"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <CheckBox
+            android:id="@+id/stringdata_main_prestretch"
+            android:layout_column="1"/>
+
+        <CheckBox
+            android:id="@+id/stringdata_cross_prestretch"
+            android:layout_column="3"/>
+
+    </TableRow>
+
+    <!-- just draw a black line -->
+    <View
+        android:layout_height="2dip"
+        android:background="#000000" />
+
+    <TableRow
+        android:id="@+id/tableRow_Comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/textView_CommentsLabel"
+            android:text="Comments"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/stringdata_comments"
+            android:layout_column="1"
+            android:layout_span="4"
+            android:inputType="textMultiLine"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </TableRow>
+
+</TableLayout>

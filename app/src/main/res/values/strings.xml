@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Simple Racket DB</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="delete_racket">Delete Racket</string>
+    <string name="edit_racket">Edit Racket</string>
+    <string name="delete_string">Delete String</string>
+    <string name="edit_string">Edit String</string>
+</resources>

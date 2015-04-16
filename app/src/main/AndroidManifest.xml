@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.plew.android.simpleracketdb" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".RacketListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RacketActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".RacketListActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTop" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RacketListActivity" />
+        </activity>
+        <activity
+            android:name=".StrngDataActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".RacketActivity"
+            android:launchMode="singleTop" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RacketActivity" />
+        </activity>
+    </application>
+
+</manifest>
