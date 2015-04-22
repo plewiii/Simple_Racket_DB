@@ -63,7 +63,7 @@ public class RacketJSONSerializer {
     }
 
     public void saveRackets(ArrayList<Racket> rackets) throws JSONException, IOException {
-        Log.d(TAG, "RacketJSONSerializer(): calling saveRackets()");
+        //Log.d(TAG, "RacketJSONSerializer(): calling saveRackets()");
 
         // build an array in JSON
         JSONArray array = new JSONArray();

@@ -1,39 +1,19 @@
 package com.plew.android.simpleracketdb;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
+import com.plew.android.common.tabview.RacketViewPagerAdapter;
+import com.plew.android.common.tabview.SlidingTabLayout;
 
 
 /**
@@ -48,10 +28,6 @@ public class RacketFragment extends Fragment {
 
     private static final String TAG = "RacketFragment";
 
-    private static final String DIALOG_DATE = "date";
-    private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_STRING = 1;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     // Orig: private static final String ARG_PARAM1 = "param1";
@@ -65,26 +41,11 @@ public class RacketFragment extends Fragment {
 
     public static final String EXTRA_RACKET_ID = "racket.RACKET_ID";
 
-    Racket mRacket;
-
-    ImageButton mRacketDetailExpandCollapseButton;
-    LinearLayout mRacketDetailLayout;
-    TextView mRacketDateTextView;
-    Button mRacketDateButton;
-    EditText mRacketNameEditText;
-    EditText mRacketMfgModelEditText;
-    EditText mRacketHeadSizeEditText;
-    EditText mRacketLengthEditText;
-
-    Button mRacketStringsButton;
-    ListView mRacketStringListView;
-
-    ArrayAdapter<StrngData> strngdata_adapter;
-    private ArrayList<StrngData> mStrngDatas;
-    //colors: String colors[] = {"red", "orange", "yellow", "greeen", "blue",
-    //colors:         "indigo", "violet", "aqua", "black", "fuchsia",
-    //colors:         "gray", "grey", "lime", "maroon", "navy",
-    //colors:         "olive", "purple", "silver", "teal", "white"};
+    ViewPager pager;
+    RacketViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
+    CharSequence Titles[]={"Racket","Strings"};
+    int Numboftabs =2;
 
     /**
      * Use this factory method to create a new instance of
@@ -111,17 +72,17 @@ public class RacketFragment extends Fragment {
     }
 
     // chapter 10: flexible method:
-    public static RacketFragment newInstance(UUID racketId) {
-        Bundle args = new Bundle();
-        args.putSerializable(EXTRA_RACKET_ID, racketId);
+    // chapter 10: flexible method:public static RacketFragment newInstance(UUID racketId) {
+    // chapter 10: flexible method:    Bundle args = new Bundle();
+    // chapter 10: flexible method:    args.putSerializable(EXTRA_RACKET_ID, racketId);
 
-        //Log.d(TAG, "newInstance");
+    // chapter 10: flexible method:    //Log.d(TAG, "newInstance");
 
-        RacketFragment fragment = new RacketFragment();
-        fragment.setArguments(args);
+    // chapter 10: flexible method:    RacketFragment fragment = new RacketFragment();
+    // chapter 10: flexible method:    fragment.setArguments(args);
 
-        return fragment;
-    }
+    // chapter 10: flexible method:    return fragment;
+    // chapter 10: flexible method:}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,17 +96,12 @@ public class RacketFragment extends Fragment {
         getActivity().setTitle("Racket Data");
 
         // chapter 10: delete: mRacket = new Racket();
-        UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
+        // Peter: not used: UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
-        mRacket = RacketList.get(getActivity()).getRacket(racketId);
-        mStrngDatas = mRacket.getStrngDatas();
+        // Peter: not used: mRacket = RacketList.get(getActivity()).getRacket(racketId);
+        // Peter: not used: mStrngDatas = mRacket.getStrngDatas();
 
         setHasOptionsMenu(true);
-    }
-
-    public void updateDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
-        mRacketDateButton.setText(sdf.format(mRacket.getDate()));
     }
 
     @Override
@@ -163,128 +119,30 @@ public class RacketFragment extends Fragment {
             ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mRacketDetailLayout = (LinearLayout)v.findViewById(R.id.layout_racketDetail);
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        adapter =  new RacketViewPagerAdapter(getActivity().getSupportFragmentManager(),Titles,Numboftabs);
 
-        mRacketDetailExpandCollapseButton = (ImageButton)v.findViewById(R.id.button_racketDetailExpandCollapse);
-        mRacketDetailLayout.setVisibility(View.GONE);  // hide the racket "detail" layout
-        mRacketDetailExpandCollapseButton.setImageResource(R.drawable.ic_action_expand);
-        mRacketDetailExpandCollapseButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mRacketDetailLayout.isShown()) {
-                    mRacketDetailLayout.setVisibility(View.GONE);
-                    mRacketDetailExpandCollapseButton.setImageResource(R.drawable.ic_action_expand);
-                }
-                else {
-                    mRacketDetailLayout.setVisibility(View.VISIBLE);
-                    mRacketDetailExpandCollapseButton.setImageResource(R.drawable.ic_action_collapse);
-                }
-            }
-        });
+        // Assigning ViewPager View and setting the adapter
+        pager = (ViewPager) v.findViewById(R.id.pager);
+        pager.setAdapter(adapter);
 
-        mRacketNameEditText = (EditText)v.findViewById(R.id.editText_RacketName);
-        mRacketNameEditText.setText(mRacket.getName());
-        mRacketNameEditText.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence c, int start, int before, int count) {
-                mRacket.setName(c.toString());
-            }
+        // Assiging the Sliding Tab Layout View
+        tabs = (SlidingTabLayout) v.findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
 
-            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
-                // this space intentionally left blank
-            }
-
-            public void afterTextChanged(Editable c) {
-                // this one too
-            }
-        });
-
-        mRacketMfgModelEditText = (EditText)v.findViewById(R.id.editText_RacketMfgModel);
-        mRacketMfgModelEditText.setText(mRacket.getMfgModel());
-        mRacketMfgModelEditText.addTextChangedListener(new TextWatcher() {
-            public void onTextChanged(CharSequence c, int start, int before, int count) {
-                mRacket.setMfgModel(c.toString());
-            }
-
-            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
-                // this space intentionally left blank
-            }
-
-            public void afterTextChanged(Editable c) {
-                // this one too
-            }
-        });
-
-        mRacketDateButton = (Button)v.findViewById(R.id.button_racketDate);
-        updateDate();
-        mRacketDateButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Log.d(TAG, "onClick(): mRacketChangeDateButton");
-
-                FragmentManager fm = getActivity()
-                        .getSupportFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment
-                        .newInstance(mRacket.getDate());
-                dialog.setTargetFragment(RacketFragment.this, REQUEST_DATE);
-                dialog.show(fm, DIALOG_DATE);
-            }
-        });
-
-        mRacketStringsButton = (Button)v.findViewById(R.id.button_racketStrings);
-        mRacketStringsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Log.d(TAG, "onClick(): mRacketStringsButton");
-
-                StrngData strngdata = new StrngData();
-                mRacket.addStrngData(strngdata);
-                RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addStrngData
-                Intent i = new Intent(getActivity(), StrngDataActivity.class);
-                i.putExtra(StrngDataFragment.EXTRA_RACKET_ID, mRacket.getId());
-                i.putExtra(StrngDataFragment.EXTRA_STRINGDATA_ID, strngdata.getId());
-                startActivityForResult(i, REQUEST_DATE);
-            }
-        });
-
-        mRacketStringListView = (ListView)v.findViewById(R.id.list_racketStrings);
-        //colors: mRacketStringListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_racket_item, R.id.name, colors));
-        strngdata_adapter = new ArrayAdapter<StrngData>(getActivity(), R.layout.list_racket_item, R.id.name, mStrngDatas);
-        mRacketStringListView.setAdapter(strngdata_adapter);
-
-        mRacketStringListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        /*
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
-            public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
-                //colors: String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
-                //colors: Log.d(TAG, "onItemClick(): " + name);
-
-                StrngData c = (StrngData)(strngdata_adapter.getItem(position));
-                //StrngData c = mStrngDatas.get(position);      // this does not use the strngdata_adapter
-                //Log.d(TAG, "onItemClick(): " + c.getName());
-
-                Intent i = new Intent(getActivity(), StrngDataActivity.class);
-                i.putExtra(StrngDataFragment.EXTRA_RACKET_ID, mRacket.getId());
-                i.putExtra(StrngDataFragment.EXTRA_STRINGDATA_ID, c.getId());
-                startActivityForResult(i, 0);
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
             }
-        });
+        }); */
 
-        registerForContextMenu(mRacketStringListView);
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
 
         return v;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == REQUEST_DATE) {
-            // Make sure the request was successful
-            if (resultCode == Activity.RESULT_OK) {
-                Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-                mRacket.setDate(date);
-                updateDate();
-            }
-        }
-        //else if (requestCode == REQUEST_STRING) {
-            // check status?????
-            strngdata_adapter.notifyDataSetChanged();
-        //}
     }
 
     @Override
@@ -311,47 +169,6 @@ public class RacketFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-            // Casts the incoming data object into the type for AdapterView objects.
-            info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        } catch (ClassCastException e) {
-            // If the menu object can't be cast, logs an error.
-            Log.e(TAG, "bad menuInfo", e);
-            return;
-        }
-        StrngData strngdata = strngdata_adapter.getItem(info.position);
-
-        menu.setHeaderTitle("Action: " + strngdata.toString());
-
-        getActivity().getMenuInflater().inflate(R.menu.string_list_item_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        int position = info.position;
-        StrngData strngdata = strngdata_adapter.getItem(position);
-
-        switch (item.getItemId()) {
-            case R.id.menu_item_edit_string:
-                Intent i = new Intent(getActivity(), StrngDataActivity.class);
-                i.putExtra(StrngDataFragment.EXTRA_RACKET_ID, mRacket.getId());
-                i.putExtra(StrngDataFragment.EXTRA_STRINGDATA_ID, strngdata.getId());
-                startActivityForResult(i, 0);
-                return true;
-            case R.id.menu_item_delete_string:
-                UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
-                RacketList.get(getActivity()).getRacket(racketId).deleteStrngData(strngdata);
-                RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in deleteStrngData
-                strngdata_adapter.notifyDataSetChanged();
-                return true;
-        }
-        return super.onContextItemSelected(item);
     }
 
     @Override

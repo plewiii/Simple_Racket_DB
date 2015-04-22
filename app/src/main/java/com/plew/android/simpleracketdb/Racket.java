@@ -133,7 +133,7 @@ public class Racket {
             StrngData c = new StrngData(jsonStrngDataObj);
             mStrngDatas.add(c);
         }
-        Log.d(TAG, "Racket(JSONObject json): mStrngDatas.size():" + mStrngDatas.size());
+        //Log.d(TAG, "Racket(JSONObject json): mStrngDatas.size():" + mStrngDatas.size());
 
     }
 

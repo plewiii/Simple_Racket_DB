@@ -26,7 +26,12 @@ public class RacketList {
 
         try {
             mRackets = mSerializer.loadRackets();
-            Log.d(TAG, "RacketList(): mRackets:" + mRackets.size());
+            Log.d(TAG, "RacketList(): mRackets.size():" + mRackets.size());
+            for (int i = 0; i < mRackets.size(); i++) {
+                Racket c = mRackets.get(i);
+                int count = c.getStrngDatas().size();
+                Log.d(TAG, "RacketList(): racket(" + i + "): " + count);
+            }
         } catch (Exception e) {
             mRackets = new ArrayList<Racket>();
             Log.e(TAG, "Error loading rackets: ", e);
@@ -72,7 +77,7 @@ public class RacketList {
     public boolean saveRackets() {
         try {
             mSerializer.saveRackets(mRackets);
-            //Log.d(TAG, "saveRackets()");
+            Log.d(TAG, "saveRackets()");
             return true;
         } catch (Exception e) {
             Log.e(TAG, "Error saving Rackets: " + e);

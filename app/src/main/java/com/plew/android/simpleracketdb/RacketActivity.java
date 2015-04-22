@@ -64,12 +64,13 @@ public class RacketActivity extends ActionBarActivity {
 
     // not needed: @Override
     //protected Fragment createFragment() {
+    /*
     protected Fragment createFragment() {
         //Log.d(TAG, "createFragment(): ");
         UUID racketId = (UUID)getIntent()
                 .getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);
         return RacketFragment.newInstance(racketId);
-    }
+    }  */
 
     /**
      * A placeholder fragment containing a simple view.
