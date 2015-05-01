@@ -17,7 +17,11 @@ public class StrngData {
 
     private static final String JSON_STRNG_ID = "string_id";
     private static final String JSON_STRNG_DATE = "string_date";
+
     private static final String JSON_STRNG_NAME = "string_name";
+    private static final String JSON_STRNG_LOCATION = "string_location";
+    private static final String JSON_STRNG_COST = "string_cost";
+
     private static final String JSON_STRNG_MAIN_MFGMODEL = "string_main_mfgmodel";
     private static final String JSON_STRNG_MAIN_GAUGE = "string_main_gauge";
     private static final String JSON_STRNG_MAIN_TENSION = "string_main_tension";
@@ -28,15 +32,18 @@ public class StrngData {
     private static final String JSON_STRNG_CROSS_TENSION = "string_cross_tension";
     private static final String JSON_STRNG_CROSS_TENSIONUNITS = "string_cross_tensionunits";
     private static final String JSON_STRNG_CROSS_PRESTRETCH = "string_cross_prestretch";
+
     private static final String JSON_STRNG_COMMENTS = "string_comments";
 
-    private static int count = 0;   // counter used for testing
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");   // for testing
 
     private UUID mId;
     private Date mDate;
 
     private String mName;
+    private String mLocation;
+    private String mCost;
+
     private String mMainMfgModel;
     private String mMainGauge;
     private String mMainTension;
@@ -47,6 +54,7 @@ public class StrngData {
     private String mCrossTension;
     private String mCrossTensionUnits;
     private boolean mCrossPrestretch;
+
     private String mComments;
 
     public StrngData() {
@@ -54,15 +62,17 @@ public class StrngData {
         mDate = new Date();
         //Log.d(TAG, "StrngData(): " + mDate);
 
-        mName = "String #" + Integer.toString(count++);
+        mName = "My String";
+        mLocation = "My Favorite Tennis Store";
+        mCost = "$25";
 
-        mMainMfgModel = "Main Mfg/Model";
-        mMainGauge = "16";
-        mMainTension = "55";
+        mMainMfgModel = "Prince Synthetic Gut Duraflex";
+        mMainGauge = "17";
+        mMainTension = "58";
         mMainTensionUnits = "lbs";
         mMainPrestretch = false;
 
-        mCrossMfgModel = "Crosses Mfg/Model";
+        mCrossMfgModel = "Prince Original Synthetic Gut";
         mCrossGauge = "16";
         mCrossTension = "55";
         mCrossTensionUnits = "lbs";
@@ -77,6 +87,9 @@ public class StrngData {
         mDate = new Date(json.getLong(JSON_STRNG_DATE));
 
         mName = json.getString(JSON_STRNG_NAME);
+        mLocation = json.getString(JSON_STRNG_LOCATION);
+        mCost = json.getString(JSON_STRNG_COST);
+
         mMainMfgModel = json.getString(JSON_STRNG_MAIN_MFGMODEL);
         mMainGauge = json.getString(JSON_STRNG_MAIN_GAUGE);
         mMainTension = json.getString(JSON_STRNG_MAIN_TENSION);
@@ -87,6 +100,7 @@ public class StrngData {
         mCrossTension = json.getString(JSON_STRNG_CROSS_TENSION);
         mCrossTensionUnits = json.getString(JSON_STRNG_CROSS_TENSIONUNITS);
         mCrossPrestretch = json.getBoolean(JSON_STRNG_CROSS_PRESTRETCH);
+
         mComments = json.getString(JSON_STRNG_COMMENTS);
     }
 
@@ -98,6 +112,9 @@ public class StrngData {
         json.put(JSON_STRNG_DATE, mDate.getTime());
 
         json.put(JSON_STRNG_NAME, mName);
+        json.put(JSON_STRNG_LOCATION, mLocation);
+        json.put(JSON_STRNG_COST, mCost);
+
         json.put(JSON_STRNG_MAIN_MFGMODEL, mMainMfgModel);
         json.put(JSON_STRNG_MAIN_GAUGE, mMainGauge);
         json.put(JSON_STRNG_MAIN_TENSION, mMainTension);
@@ -108,6 +125,7 @@ public class StrngData {
         json.put(JSON_STRNG_CROSS_TENSION, mCrossTension);
         json.put(JSON_STRNG_CROSS_TENSIONUNITS, mCrossTensionUnits);
         json.put(JSON_STRNG_CROSS_PRESTRETCH, mCrossPrestretch);
+
         json.put(JSON_STRNG_COMMENTS, mComments);
 
         return json;
@@ -139,6 +157,26 @@ public class StrngData {
     public void setName(String name) {
         mName = name;
         //Log.d(TAG, "setName(): " + mName);
+    }
+
+    public String getLocation() {
+        //Log.d(TAG, "getLocation(): " + mLocation);
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+        //Log.d(TAG, "setLocation(): " + mLocation);
+    }
+
+    public String getCost() {
+        //Log.d(TAG, "getCost(): " + mCost);
+        return mCost;
+    }
+
+    public void setCost(String cost) {
+        mCost = cost;
+        //Log.d(TAG, "setCost(): " + mCost);
     }
 
     public String getMainMfgModel() {

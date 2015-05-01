@@ -44,8 +44,8 @@ public class RacketFragment extends Fragment {
     ViewPager pager;
     RacketViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Racket","Strings"};
-    int Numboftabs =2;
+    CharSequence Titles[]={"Racket", "Strings", "Specs" };   // 3 tabs version: "Racket", "Strings", "Specs"
+    int Numboftabs =2;   // Change to 3 if 3 tabs version.   Also, must change data in RacketViewPagerAdapter.java
 
     /**
      * Use this factory method to create a new instance of

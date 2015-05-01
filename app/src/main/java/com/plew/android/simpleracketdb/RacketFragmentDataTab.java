@@ -10,6 +10,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -30,9 +33,22 @@ public class RacketFragmentDataTab extends Fragment {
     Racket mRacket;
 
     EditText mRacketNameEditText;
+    AutoCompleteTextView mRacketMfgModelAutoCompleteTextView;
     EditText mRacketSerialNumberEditText;
-    Button mRacketDateButton;
-    EditText mRacketMfgModelEditText;
+    Button mRacketPurchaseDateButton;
+    EditText mRacketPurchaseLocationEditText;
+    EditText mRacketPurchasePriceEditText;
+    EditText mRacketCommentsEditText;
+
+    static final String[] RACKET_MFG = new String[] { "adidas", "Ashaway", "Avery",
+            "Babolat", "Bancroft", "Black Knight", "Blackburne", "Boris Becker",
+            "Bosworth", "Carlton", "Cornelian", "Donnay", "Dunlop", "E-Force", "Ektelon",
+            "Feather", "Fischer", "Fox", "Gamma", "Gearbox", "Harrow", "Head", "HL Corp",
+            "Megaage", "Natural", "Pacific", "Power Angle", "Prince", "Pro Kennex",
+            "Pro Supex", "Slazenger", "Technifibre", "Topspin",
+            "Vantage", "Volkl",
+            "Vortex", "Weed",
+            "Wilson", "Winjammer", "X-45", "Yonex" };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,19 +60,20 @@ public class RacketFragmentDataTab extends Fragment {
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
         mRacket = RacketList.get(getActivity()).getRacket(racketId);
 
-        setHasOptionsMenu(true);
+        // Following disables focus on last EditText
+        // does not work: getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     public void updateDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
-        mRacketDateButton.setText(sdf.format(mRacket.getDate()));
+        mRacketPurchaseDateButton.setText(sdf.format(mRacket.getDate()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Log.d(TAG, "onCreateView(): ");
 
-        View v =inflater.inflate(R.layout.fragment_racketdatatab, container, false);
+        View v = inflater.inflate(R.layout.fragment_racketdatatab, container, false);
 
         mRacketNameEditText = (EditText)v.findViewById(R.id.editText_RacketName);
         mRacketNameEditText.setText(mRacket.getName());
@@ -64,6 +81,25 @@ public class RacketFragmentDataTab extends Fragment {
             public void onTextChanged(CharSequence c, int start, int before, int count) {
                 //Log.d(TAG, "onTextChanged(): mRacketNameEditText: " + c.toString());
                 mRacket.setName(c.toString());
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+                // this one too
+            }
+        });
+
+        mRacketMfgModelAutoCompleteTextView = (AutoCompleteTextView)v.findViewById(R.id.autocompleteTextView_RacketMfgModel);
+        mRacketMfgModelAutoCompleteTextView.setText(mRacket.getMfgModel());
+        ArrayAdapter<String> racket_mfg_adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_dropdown_item_1line, RACKET_MFG);
+        mRacketMfgModelAutoCompleteTextView.setAdapter(racket_mfg_adapter);
+        mRacketMfgModelAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                //Log.d(TAG, "onTextChanged(): mRacketMfgModelEditText: " + c.toString());
+                mRacket.setMfgModel(c.toString());
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
@@ -92,9 +128,9 @@ public class RacketFragmentDataTab extends Fragment {
             }
         });
 
-        mRacketDateButton = (Button)v.findViewById(R.id.button_racketDate);
+        mRacketPurchaseDateButton = (Button)v.findViewById(R.id.button_RacketPurchaseDate);
         updateDate();
-        mRacketDateButton.setOnClickListener(new View.OnClickListener() {
+        mRacketPurchaseDateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Log.d(TAG, "onClick(): mRacketChangeDateButton");
 
@@ -107,12 +143,12 @@ public class RacketFragmentDataTab extends Fragment {
             }
         });
 
-        mRacketMfgModelEditText = (EditText)v.findViewById(R.id.editText_RacketMfgModel);
-        mRacketMfgModelEditText.setText(mRacket.getMfgModel());
-        mRacketMfgModelEditText.addTextChangedListener(new TextWatcher() {
+        mRacketPurchaseLocationEditText = (EditText)v.findViewById(R.id.editText_RacketPurchaseLocation);
+        mRacketPurchaseLocationEditText.setText(mRacket.getPurchaseLocation());
+        mRacketPurchaseLocationEditText.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence c, int start, int before, int count) {
-                //Log.d(TAG, "onTextChanged(): mRacketMfgModelEditText: " + c.toString());
-                mRacket.setMfgModel(c.toString());
+                //Log.d(TAG, "onTextChanged(): mRacketPurchaseLocationEditText: " + c.toString());
+                mRacket.setPurchaseLocation(c.toString());
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
@@ -123,6 +159,53 @@ public class RacketFragmentDataTab extends Fragment {
                 // this one too
             }
         });
+
+        mRacketPurchasePriceEditText = (EditText)v.findViewById(R.id.editText_RacketPurchasePrice);
+        mRacketPurchasePriceEditText.setText(mRacket.getPurchasePrice());
+        mRacketPurchasePriceEditText.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                //Log.d(TAG, "onTextChanged(): mRacketPurchasePriceEditText: " + c.toString());
+                mRacket.setPurchasePrice(c.toString());
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+                // this one too
+            }
+        });
+
+        mRacketCommentsEditText = (EditText)v.findViewById(R.id.editText_RacketComments);
+        mRacketCommentsEditText.setText(mRacket.getComments());
+
+
+
+
+        mRacketCommentsEditText.clearFocus();   // kluge
+
+
+
+
+        mRacketCommentsEditText.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                //Log.d(TAG, "onTextChanged(): mRacketCommentsEditText: " + c.toString());
+                mRacket.setComments(c.toString());
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // this space intentionally left blank
+            }
+
+            public void afterTextChanged(Editable c) {
+                // this one too
+            }
+        });
+
+
+
+        mRacketNameEditText.requestFocus();   // kluge
 
         return v;
     }

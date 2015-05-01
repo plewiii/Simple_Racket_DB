@@ -113,6 +113,10 @@ public class RacketListFragment extends Fragment {
                 //Log.d(TAG, "onClick(): mRacketListAddButton");
 
                 Racket racket = new Racket();
+
+                int size = RacketList.get(getActivity()).getRackets().size();
+                racket.setName("Racket #" + Integer.toString(size));  // kluge: rename the racket
+
                 RacketList.get(getActivity()).addRacket(racket);
                 Intent i = new Intent(getActivity(), RacketActivity.class);
                 i.putExtra(RacketFragment.EXTRA_RACKET_ID, racket.getId());

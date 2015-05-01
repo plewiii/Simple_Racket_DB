@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.plew.android.simpleracketdb.RacketFragmentDataTab;
 import com.plew.android.simpleracketdb.RacketFragmentStringsTab;
+import com.plew.android.simpleracketdb.RacketFragmentSpecsTab;
 
 /**
  * Created by Tim on 4/19/2015.
@@ -29,17 +30,38 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
+        // See RacketFragment.java for 2 tab or 3 tab version
+
+        // 2 tabs version: Racket, Strings
         if(position == 0) // if the position is 0 we are returning the First tab
         {
             RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
             return racketFragmentDataTab;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        else // if the position is 1 we are returning the Second tab
         {
             RacketFragmentStringsTab racket_stringsTabFragment = new RacketFragmentStringsTab();
             return racket_stringsTabFragment;
         }
 
+
+        // 3 tabs: Racket, Strings, Specs
+        /*
+        if(position == 0) // if the position is 0 we are returning the First tab
+        {
+            RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
+            return racketFragmentDataTab;
+        }
+        else if(position == 1) // if the position is 1 we are returning the Second tab
+        {
+            RacketFragmentStringsTab racket_stringsTabFragment = new RacketFragmentStringsTab();
+            return racket_stringsTabFragment;
+        }
+        else // return Third tab
+        {
+            RacketFragmentSpecsTab racket_stringsSpecsFragment = new RacketFragmentSpecsTab();
+            return racket_stringsSpecsFragment;
+        } */
 
     }
 

@@ -48,8 +48,6 @@ public class RacketFragmentStringsTab extends Fragment {
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
         mRacket = RacketList.get(getActivity()).getRacket(racketId);
         mStrngDatas = mRacket.getStrngDatas();
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,6 +60,10 @@ public class RacketFragmentStringsTab extends Fragment {
                 //Log.d(TAG, "onClick(): mRacketStringsButton");
 
                 StrngData strngdata = new StrngData();
+
+                int size = mRacket.getStrngDatas().size();
+                strngdata.setName("String #" + Integer.toString(size));  // kluge: rename the string
+
                 mRacket.addStrngData(strngdata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addStrngData
                 Intent i = new Intent(getActivity(), StrngDataActivity.class);

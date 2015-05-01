@@ -19,8 +19,12 @@ public class Racket {
 
     private static final String JSON_RACKET_ID = "racket_id";
     private static final String JSON_RACKET_DATE = "racket_date";
+
     private static final String JSON_RACKET_NAME = "racket_name";
     private static final String JSON_RACKET_SERIALNUMBER = "racket_serialnumber";
+    private static final String JSON_RACKET_PURCHASE_LOCATION = "racket_purchase_location";
+    private static final String JSON_RACKET_PURCHASE_PRICE = "racket_purchase_price";
+
     private static final String JSON_RACKET_MFGMODEL = "racket_mfgmodel";
     private static final String JSON_RACKET_HEADSIZE = "racket_headsize";
     private static final String JSON_RACKET_LENGTH = "racket_length";
@@ -37,16 +41,19 @@ public class Racket {
     private static final String JSON_RACKET_GRIPTYPE = "racket_griptype";
     private static final String JSON_RACKET_STRINGPATTERN = "racket_stringpattern";
     private static final String JSON_RACKET_STRINGTENSION = "racket_stringtension";
-    private static final String JSON_RACKET_COMMENTS = "racket_comments";
-    private static final String JSON_RACKET_STRNGDATA = "racket_strngdata";
 
-    private static int count = 0;   // counter used for testing
+    private static final String JSON_RACKET_COMMENTS = "racket_comments";
+
+    private static final String JSON_RACKET_STRNGDATA = "racket_strngdata";
 
     private UUID mId;
     private Date mDate;
 
     private String mName;
     private String mSerialNumber;
+    private String mPurchaseLocation;
+    private String mPurchasePrice;
+
     private String mMfgModel;
     private String mHeadSize;
     private String mLength;
@@ -63,6 +70,7 @@ public class Racket {
     private String mGripType;
     private String mStringPattern;
     private String mStringTension;
+
     private String mComments;
 
     private ArrayList<StrngData> mStrngDatas;
@@ -72,9 +80,12 @@ public class Racket {
         mDate = new Date();
         //Log.d(TAG, "Racket(): " + mId + " " + mDate);
 
-        mName = "Racket #" + Integer.toString(count++);
+        mName = "My Racket";
         mSerialNumber = "00000";
-        mMfgModel = "Mfg/Model";
+        mPurchaseLocation = "My Favorite Tennis Store";
+        mPurchasePrice = "$200";
+
+        mMfgModel = "Head Graphene Radical Pro";
         mHeadSize = "98 sq. in.";
         mLength = "27 in";
         mStrungWeight = "11.5 oz";
@@ -87,8 +98,8 @@ public class Racket {
         mStrokeStyle = "Full";
         mSwingSpeed = "Fast";
         mRacketColors = "Orange and Black";
-        mGripType = "Tourna-Grip";
-        mStringPattern = "16 Mains/ 19 Crosses/nMain skip: 8T 8H/nTwo Pieces/nNoShgared Holes";
+        mGripType = "Head Hydrosorb Pro";
+        mStringPattern = "16 Mains/ 19 Crosses\nMains skip: 8T 8H\nTwo Pieces\nNo Shared Holes";
         mStringTension = "48-57 lbs";
 
         mComments = "None";
@@ -108,6 +119,9 @@ public class Racket {
 
         mName = json.getString(JSON_RACKET_NAME);
         mSerialNumber = json.getString(JSON_RACKET_SERIALNUMBER);
+        mPurchaseLocation = json.getString(JSON_RACKET_PURCHASE_LOCATION);
+        mPurchasePrice = json.getString(JSON_RACKET_PURCHASE_PRICE);
+
         mMfgModel = json.getString(JSON_RACKET_MFGMODEL);
         mHeadSize = json.getString(JSON_RACKET_HEADSIZE);
         mLength = json.getString(JSON_RACKET_LENGTH);
@@ -124,6 +138,7 @@ public class Racket {
         mGripType = json.getString(JSON_RACKET_GRIPTYPE);
         mStringPattern = json.getString(JSON_RACKET_STRINGPATTERN);
         mStringTension = json.getString(JSON_RACKET_STRINGTENSION);
+
         mComments = json.getString(JSON_RACKET_COMMENTS);
 
         JSONArray jsonStrngDataArray = json.getJSONArray(JSON_RACKET_STRNGDATA);
@@ -146,6 +161,9 @@ public class Racket {
 
         json.put(JSON_RACKET_NAME, mName);
         json.put(JSON_RACKET_SERIALNUMBER, mSerialNumber);
+        json.put(JSON_RACKET_PURCHASE_LOCATION, mPurchaseLocation);
+        json.put(JSON_RACKET_PURCHASE_PRICE, mPurchasePrice);
+
         json.put(JSON_RACKET_MFGMODEL, mMfgModel);
         json.put(JSON_RACKET_HEADSIZE, mHeadSize);
         json.put(JSON_RACKET_LENGTH, mLength);
@@ -162,6 +180,7 @@ public class Racket {
         json.put(JSON_RACKET_GRIPTYPE, mGripType);
         json.put(JSON_RACKET_STRINGPATTERN, mStringPattern);
         json.put(JSON_RACKET_STRINGTENSION, mStringTension);
+
         json.put(JSON_RACKET_COMMENTS, mComments);
 
         // Add Strings - need json array to hold the list
@@ -213,6 +232,26 @@ public class Racket {
         //Log.d(TAG, "setSerialNumber(): " + mSerialNumber);
     }
 
+    public String getPurchaseLocation() {
+        //Log.d(TAG, "getPurchaseLocation(): " + mPurchaseLocation);
+        return mPurchaseLocation;
+    }
+
+    public void setPurchaseLocation(String purchaseLocation) {
+        mPurchaseLocation = purchaseLocation;
+        //Log.d(TAG, "setPurchaseLocation(): " + mPurchaseLocation);
+    }
+
+    public String getPurchasePrice() {
+        //Log.d(TAG, "getPurchasePrice(): " + mPurchasePrice);
+        return mPurchasePrice;
+    }
+
+    public void setPurchasePrice(String purchasePrice) {
+        mPurchasePrice = purchasePrice;
+        //Log.d(TAG, "setPurchasePrice(): " + mPurchasePrice);
+    }
+
     public String getMfgModel() {
         //Log.d(TAG, "getMfgModel(): " + mMfgModel);
         return mMfgModel;
@@ -251,6 +290,16 @@ public class Racket {
     public void setStrungWeight(String strungWeight) {
         mStrungWeight = strungWeight;
         //Log.d(TAG, "setStrungWeight(): " + mStrungWeight);
+    }
+
+    public String getBalance() {
+        //Log.d(TAG, "getBalance(): " + mBalance);
+        return mBalance;
+    }
+
+    public void setBalance(String balance) {
+        mBalance = balance;
+        //Log.d(TAG, "setBalance(): " + mBalance);
     }
 
     public String getSwingweight() {
@@ -311,6 +360,16 @@ public class Racket {
     public void setStrokeStyle(String strokeStyle) {
         mStrokeStyle = strokeStyle;
         //Log.d(TAG, "setStrokeStyle(): " + mStrokeStyle);
+    }
+
+    public String getSwingSpeed() {
+        //Log.d(TAG, "getSwingSpeed(): " + mSwingSpeed);
+        return mSwingSpeed;
+    }
+
+    public void setSwingSpeed(String swingSpeed) {
+        mSwingSpeed = swingSpeed;
+        //Log.d(TAG, "setSwingSpeed(): " + mSwingSpeed);
     }
 
     public String getRacketColors() {
