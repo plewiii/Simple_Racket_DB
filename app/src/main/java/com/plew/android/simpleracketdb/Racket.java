@@ -46,6 +46,8 @@ public class Racket {
 
     private static final String JSON_RACKET_STRNGDATA = "racket_strngdata";
 
+    private static final String JSON_RACKET_IMAGEDATA = "racket_imagedata";
+
     private UUID mId;
     private Date mDate;
 
@@ -74,6 +76,8 @@ public class Racket {
     private String mComments;
 
     private ArrayList<StrngData> mStrngDatas;
+
+    private ArrayList<ImageData> mImageDatas;
 
     public Racket() {
         mId = UUID.randomUUID();
@@ -110,6 +114,8 @@ public class Racket {
         //    c.setMainName("String #" + i);
         //    mStrngDatas.add(c);
         //}
+
+        mImageDatas = new ArrayList<ImageData>();
     }
 
     public Racket(JSONObject json) throws JSONException {
@@ -142,13 +148,22 @@ public class Racket {
         mComments = json.getString(JSON_RACKET_COMMENTS);
 
         JSONArray jsonStrngDataArray = json.getJSONArray(JSON_RACKET_STRNGDATA);
-        mStrngDatas = new ArrayList<StrngData>();  // Peter
+        mStrngDatas = new ArrayList<StrngData>();
         for (int i = 0; i < jsonStrngDataArray.length(); i++) {
             JSONObject jsonStrngDataObj = jsonStrngDataArray.getJSONObject(i);
             StrngData c = new StrngData(jsonStrngDataObj);
             mStrngDatas.add(c);
         }
         //Log.d(TAG, "Racket(JSONObject json): mStrngDatas.size():" + mStrngDatas.size());
+
+        JSONArray jsonImageDataArray = json.getJSONArray(JSON_RACKET_IMAGEDATA);
+        mImageDatas = new ArrayList<ImageData>();
+        for (int i = 0; i < jsonImageDataArray.length(); i++) {
+            JSONObject jsonImageDataObj = jsonImageDataArray.getJSONObject(i);
+            ImageData c = new ImageData(jsonImageDataObj);
+            mImageDatas.add(c);
+        }
+        //Log.d(TAG, "Racket(JSONObject json): mImageDatas.size():" + mImageDatas.size());
 
     }
 
@@ -190,6 +205,14 @@ public class Racket {
             jsonStrngDataArray.put(jsonStrngDataObj);
         }
         json.put(JSON_RACKET_STRNGDATA, jsonStrngDataArray);
+
+        // Add Images - need json array to hold the list
+        JSONArray jsonImageDataArray = new JSONArray();
+        for (ImageData c : mImageDatas) {
+            JSONObject jsonImageDataObj = c.toJSON();
+            jsonImageDataArray.put(jsonImageDataObj);
+        }
+        json.put(JSON_RACKET_IMAGEDATA, jsonImageDataArray);
 
         return json;
     }
@@ -442,5 +465,27 @@ public class Racket {
 
     public ArrayList<StrngData> getStrngDatas() {
         return mStrngDatas;
+    }
+
+    public ImageData getImageData(UUID id) {
+        for (ImageData c : mImageDatas) {
+            if (c.getId().equals(id))
+                return c;
+        }
+        return null;
+    }
+
+    public void addImageData(ImageData c) {
+        mImageDatas.add(c);
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
+    }
+
+    public void deleteImageData(ImageData c) {
+        mImageDatas.remove(c);
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
+    }
+
+    public ArrayList<ImageData> getImageDatas() {
+        return mImageDatas;
     }
 }

@@ -20,7 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_name"
@@ -29,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -45,14 +47,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <Button
                 android:id="@+id/stringdata_date"
                 android:text="Date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -67,7 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_location"
@@ -76,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -91,7 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_cost"
@@ -100,7 +107,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -116,7 +124,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:padding="2dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#00000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,7 +138,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <AutoCompleteTextView
                 android:id="@+id/stringdata_main_mfgmodel"
@@ -138,7 +148,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -153,7 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_main_gauge"
@@ -163,7 +175,8 @@
                 android:ems="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -178,7 +191,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_main_tension"
@@ -189,7 +203,8 @@
                 android:ems="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <RadioGroup
                 android:id="@+id/checkbox_MainsTensionUnits"
@@ -201,13 +216,15 @@
                     android:id="@+id/stringdata_main_tension_units_lbs"
                     android:text="lbs"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="#00000000" />
 
                 <RadioButton
                     android:id="@+id/stringdata_main_tension_units_kg"
                     android:text="kg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="#00000000" />
 
             </RadioGroup>
 
@@ -224,7 +241,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <CheckBox
                 android:id="@+id/stringdata_main_prestretch"
@@ -245,7 +263,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:padding="2dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#00000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -258,7 +277,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <AutoCompleteTextView
                 android:id="@+id/stringdata_cross_mfgmodel"
@@ -267,7 +287,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -282,7 +303,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_cross_gauge"
@@ -292,7 +314,8 @@
                 android:ems="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 
@@ -307,7 +330,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_cross_tension"
@@ -318,7 +342,8 @@
                 android:ems="4"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:background="@drawable/custom_rectangle"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <RadioGroup
                 android:id="@+id/checkbox_CrossesTensionUnits"
@@ -330,13 +355,15 @@
                     android:id="@+id/stringdata_cross_tension_units_lbs"
                     android:text="lbs"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="#00000000" />
 
                 <RadioButton
                     android:id="@+id/stringdata_cross_tension_units_kg"
                     android:text="kg"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="#00000000" />
 
             </RadioGroup>
 
@@ -353,7 +380,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <CheckBox
                 android:id="@+id/stringdata_cross_prestretch"
@@ -380,7 +408,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="#00000000" />
 
             <EditText
                 android:id="@+id/stringdata_comments"
@@ -395,7 +424,8 @@
                 android:minLines="6"
                 android:gravity="top|left"
                 android:maxLines="10"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical"
+                android:textColor="#00000000" />
 
         </LinearLayout>
 

@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="left|center_vertical"
-        android:drawableRight="@drawable/ic_action_new" />
+        android:drawableRight="@drawable/ic_action_new"
+        android:textColor="#00000000" />
 
     <ListView
         android:id="@+id/list_racketList"

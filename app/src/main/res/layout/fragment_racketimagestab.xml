@@ -5,8 +5,8 @@
                 android:orientation="vertical">
 
     <Button
-        android:id="@+id/button_racketStrings"
-        android:text="Add String"
+        android:id="@+id/button_racketImages"
+        android:text="Add Image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -15,7 +15,7 @@
         android:textColor="#00000000" />
 
     <ListView
-        android:id="@+id/list_racketStrings"
+        android:id="@+id/list_racketImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

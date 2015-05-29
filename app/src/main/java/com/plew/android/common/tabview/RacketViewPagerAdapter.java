@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.plew.android.simpleracketdb.RacketFragmentDataTab;
+import com.plew.android.simpleracketdb.RacketFragmentImagesTab;
 import com.plew.android.simpleracketdb.RacketFragmentStringsTab;
 import com.plew.android.simpleracketdb.RacketFragmentSpecsTab;
 
@@ -33,6 +34,7 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
         // See RacketFragment.java for 2 tab or 3 tab version
 
         // 2 tabs version: Racket, Strings
+        /*
         if(position == 0) // if the position is 0 we are returning the First tab
         {
             RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
@@ -43,9 +45,10 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
             RacketFragmentStringsTab racket_stringsTabFragment = new RacketFragmentStringsTab();
             return racket_stringsTabFragment;
         }
+        */
 
 
-        // 3 tabs: Racket, Strings, Specs
+        // 3 tabs: Racket, Strings, Images
         /*
         if(position == 0) // if the position is 0 we are returning the First tab
         {
@@ -59,9 +62,32 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         else // return Third tab
         {
+            RacketFragmentImagesTab racket_imagesTabFragment = new RacketFragmentImagesTab();
+            return racket_imagesTabFragment;
+        }
+        */
+
+        // 4 tabs: Racket, Strings, Images, Specs
+        if(position == 0) // if the position is 0 we are returning the First tab
+        {
+            RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
+            return racketFragmentDataTab;
+        }
+        else if(position == 1) // if the position is 1 we are returning the Second tab
+        {
+            RacketFragmentStringsTab racket_stringsTabFragment = new RacketFragmentStringsTab();
+            return racket_stringsTabFragment;
+        }
+        else if(position == 2) // if the position is 2 we are returning the Third tab
+        {
+            RacketFragmentImagesTab racket_imagesTabFragment = new RacketFragmentImagesTab();
+            return racket_imagesTabFragment;
+        }
+        else // return Fourth tab
+        {
             RacketFragmentSpecsTab racket_stringsSpecsFragment = new RacketFragmentSpecsTab();
             return racket_stringsSpecsFragment;
-        } */
+        }
 
     }
 
