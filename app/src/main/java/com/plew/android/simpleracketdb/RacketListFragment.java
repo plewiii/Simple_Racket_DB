@@ -1,10 +1,13 @@
 package com.plew.android.simpleracketdb;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -19,8 +22,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -96,6 +107,8 @@ public class RacketListFragment extends Fragment {
         //    mRackets.get(i).toString();
         //    Log.d(TAG, "RacketListFragment(): " + i + ": " + mRackets.get(i).toString());
         //}
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -187,12 +200,115 @@ public class RacketListFragment extends Fragment {
                 startActivityForResult(i, 0);
                 return true;
             case R.id.menu_item_delete_racket:
-                RacketList.get(getActivity()).deleteRacket(racket);
-                racket_adapter.notifyDataSetChanged();
+                alertMessageDeleteRacket(racket);
                 return true;
         }
         return super.onContextItemSelected(item);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_racket, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_export_json:
+                //Toast.makeText(getActivity(), "Export", Toast.LENGTH_SHORT).show();
+                boolean export_flag = RacketList.get(getActivity()).exportRacketsJSON();
+                if (export_flag)
+                    Toast.makeText(getActivity(), "Export success", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getActivity(), "Export failed", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_import_json:
+                // Pop up dialog to confirm import
+                alertMessageImportJSON();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void alertMessageDeleteRacket(final Racket racket) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Delete...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Delete " + racket.toString() + "?");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
+                RacketList.get(getActivity()).deleteRacket(racket);
+                racket_adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void alertMessageImportJSON() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Import ...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Warning: racket data and images will be deleted!!!!");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
+
+                boolean import_flag = RacketList.get(getActivity()).importRacketsJSON();
+                if (import_flag) {
+                    Toast.makeText(getActivity(), "Import success", Toast.LENGTH_SHORT).show();
+                    mRackets = RacketList.get(getActivity()).getRackets();
+                    // this call did not work: racket_adapter.notifyDataSetChanged();
+                    racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.name, mRackets);
+                    mRacketListView.setAdapter(racket_adapter);
+                }
+                else
+                    Toast.makeText(getActivity(), "Import failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
 
 
     // Orig: // TODO: Rename method, update argument and hook method into UI event

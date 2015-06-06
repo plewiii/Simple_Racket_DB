@@ -96,8 +96,8 @@ public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
             // this works too: holder.imageView.setImageDrawable(drawable);
         }
         else {
-            Toast.makeText(context, "imageFile NOT exists():" + objects.get(position).getUri(),
-                    Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "imageFile NOT exists():" + objects.get(position).getUri(),
+            //        Toast.LENGTH_LONG).show();
             holder.imageView.setImageResource(R.mipmap.ic_launcher);
         }
 

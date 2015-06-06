@@ -108,7 +108,7 @@ public class RacketFragmentImagesTab extends Fragment {
                 //        Toast.LENGTH_SHORT).show();
 
                 // Pop up dialog to confirm delete image
-                alertMessage(c);
+                alertMessageDeleteImage(c);
 
                 return true;
             }
@@ -223,6 +223,53 @@ public class RacketFragmentImagesTab extends Fragment {
         return super.onContextItemSelected(item);
     }  */
 
+    private void alertMessageDeleteImage(final ImageData imagedata) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Delete...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Delete " + imagedata.toString() + "?");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
+
+                // Delete photo
+                UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);  // chapter 10: direct method:
+                boolean flag = RacketList.get(getActivity()).getRacket(racketId).deletePhoto(imagedata.getUri());
+                //if (flag) {
+                //    Toast.makeText(getActivity(), "Deleting Image...:" + imagedata.toString(),
+                //            Toast.LENGTH_LONG).show();
+                //}
+                //else {
+                //    Toast.makeText(getActivity(), "Error: Image NOT deleted:" + imagedata.toString(),
+                //            Toast.LENGTH_LONG).show();
+                //}
+                RacketList.get(getActivity()).getRacket(racketId).deleteImageData(imagedata);
+                RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in deleteImageData
+                imagedata_adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -238,7 +285,7 @@ public class RacketFragmentImagesTab extends Fragment {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), getActivity().getPackageName());   // "PeterTestCamera"
+                Environment.DIRECTORY_PICTURES), getActivity().getPackageName());
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -265,73 +312,6 @@ public class RacketFragmentImagesTab extends Fragment {
         }
 
         return mediaFile;
-    }
-
-    private void deletePhoto(Uri photoUri) {
-        File imageFile = new File(photoUri.getPath());    // Peter: kluge   photoUri causes compile error
-        if (imageFile.exists()){
-            boolean deleted = imageFile.delete();
-            if (deleted) {
-                Toast.makeText(getActivity(), "Deleting Image...:" + photoUri.toString(),
-                        Toast.LENGTH_LONG).show();
-                // delete ?????: Drawable oldDrawable = photoImage.getDrawable();
-                // delete ?????: if (oldDrawable != null) {
-                // delete ?????:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
-                // delete ?????: }
-
-                // delete ?????: photoImage.setImageDrawable(null);
-            }
-            else {
-                Toast.makeText(getActivity(), "Error: Image NOT deleted:" + photoUri.toString(),
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-        else {
-            Toast.makeText(getActivity(), "Image NOT deleted:" + photoUri.toString(),
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-    // Workaround to delete image on long click
-    public void alertMessage(final ImageData imagedata) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-
-        // Setting Dialog Title
-        alertDialog.setTitle("Confirm Delete...");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("Delete " + imagedata.toString() + "?");    // "Delete image?"
-
-        // Setting Icon to Dialog
-        //alertDialog.setIcon(R.drawable.delete);
-
-        // Setting Positive "Yes" Button
-        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                // Yes button clicked
-
-                // Delete photo
-                deletePhoto(imagedata.getUri());
-
-                UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);  // chapter 10: direct method:
-                RacketList.get(getActivity()).getRacket(racketId).deleteImageData(imagedata);  // mImageDatas.remove(imagedata);
-                RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in deleteImageData
-                imagedata_adapter.notifyDataSetChanged();
-            }
-        });
-
-        // Setting Negative "NO" Button
-        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // No button clicked
-                // do nothing
-                dialog.cancel();
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.show();
     }
 
 }

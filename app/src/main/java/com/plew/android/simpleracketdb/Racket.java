@@ -1,12 +1,15 @@
 package com.plew.android.simpleracketdb;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -487,5 +490,38 @@ public class Racket {
 
     public ArrayList<ImageData> getImageDatas() {
         return mImageDatas;
+    }
+
+    // This function is the same as RacketFragmentImagesTab
+    // Tried adding to deleteImageData but caused crash (see RacketList:deleteRacket())
+    public boolean deletePhoto(Uri photoUri) {
+        File imageFile = new File(photoUri.getPath());    // Peter: kluge   photoUri causes compile error
+
+        boolean deleted = false;
+
+        if (imageFile.exists()){
+            deleted = imageFile.delete();
+            //if (deleted) {
+                //Toast.makeText(getActivity(), "Deleting Image...:" + photoUri.toString(),
+                //        Toast.LENGTH_LONG).show();
+                // delete ?????: Drawable oldDrawable = photoImage.getDrawable();
+                // delete ?????: if (oldDrawable != null) {
+                // delete ?????:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
+                // delete ?????: }
+
+                // delete ?????: photoImage.setImageDrawable(null);
+            //}
+            //else {
+                //Toast.makeText(getActivity(), "Error: Image NOT deleted:" + photoUri.toString(),
+                //        Toast.LENGTH_LONG).show();
+            //}
+        }
+        else {
+            deleted = false;
+            //Toast.makeText(getActivity(), "Image NOT deleted:" + photoUri.toString(),
+            //        Toast.LENGTH_LONG).show();
+        }
+
+        return deleted;
     }
 }

@@ -1,5 +1,7 @@
 package com.plew.android.simpleracketdb;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -142,13 +144,46 @@ public class RacketFragmentStringsTab extends Fragment {
                 startActivityForResult(i, REQUEST_STRING);
                 return true;
             case R.id.menu_item_delete_string:
+                alertMessageDeleteString(strngdata);
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void alertMessageDeleteString(final StrngData strngdata) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Delete...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Delete " + strngdata.toString() + "?");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
                 UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);  // chapter 10: direct method:
                 RacketList.get(getActivity()).getRacket(racketId).deleteStrngData(strngdata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in deleteStrngData
                 strngdata_adapter.notifyDataSetChanged();
-                return true;
-        }
-        return super.onContextItemSelected(item);
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
 }

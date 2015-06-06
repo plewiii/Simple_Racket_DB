@@ -1,8 +1,17 @@
 package com.plew.android.simpleracketdb;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -70,6 +79,13 @@ public class RacketList {
     }
 
     public void deleteRacket(Racket c) {
+        // Delete photos associated with racket
+        // Peter: not sure if this operation should be done here or if there is a more efficient way
+        ArrayList<ImageData> mImageDatas = c.getImageDatas();
+        for (ImageData imagedata : mImageDatas) {
+            c.deletePhoto(imagedata.getUri());
+        }
+
         mRackets.remove(c);
         saveRackets();
     }
@@ -85,4 +101,52 @@ public class RacketList {
         }
     }
 
+    public boolean exportRacketsJSON() {
+        try {
+            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+            mSerializer.exportRacketsJSON(mRackets, externalFilename);
+            Log.d(TAG, "exportRacketsJSON()");
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "exportRacketsJSON(): Error saving Rackets to External Drive: " + e);
+            return false;
+        }
+    }
+
+    public boolean importRacketsJSON() {
+        try {
+            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+            ArrayList<Racket> rackets = mSerializer.importRacketsJSON(externalFilename);
+            // Replace racket list if valid data is imported
+            if (rackets.size() > 0) {
+                for (Racket c : mRackets) {
+                    // Delete photos associated with racket
+                    // Peter: not sure if this operation should be done here or if there is a more efficient way
+                    ArrayList<ImageData> mImageDatas = c.getImageDatas();
+                    for (ImageData imagedata : mImageDatas) {
+                        c.deletePhoto(imagedata.getUri());
+                    }
+                }
+
+                mRackets = rackets;
+                Log.d(TAG, "importRacketsJSON(): mRackets.size():" + mRackets.size());
+                for (int i = 0; i < mRackets.size(); i++) {
+                    Racket c = mRackets.get(i);
+                    int count = c.getStrngDatas().size();
+                    Log.d(TAG, "importRacketsJSON(): racket(" + i + "): " + count);
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "importRacketsJSON(): Error loading rackets: ", e);
+            return false;
+        }
+    }
 }

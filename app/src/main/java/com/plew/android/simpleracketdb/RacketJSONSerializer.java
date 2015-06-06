@@ -8,7 +8,10 @@ import org.json.JSONException;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,5 +83,65 @@ public class RacketJSONSerializer {
             if (writer != null)
                 writer.close();
         }
+    }
+
+    public void exportRacketsJSON(ArrayList<Racket> rackets, String externalFilename) throws JSONException, IOException {
+        //Log.d(TAG, "RacketJSONSerializer(): calling exportRacketsJSON()");
+
+        // build an array in JSON
+        JSONArray array = new JSONArray();
+        for (Racket c : rackets)
+            array.put(c.toJSON());
+
+        // write the file to disk
+        FileOutputStream fileOut = null;
+        OutputStreamWriter writer = null;
+        try {
+            File mFile = new File(externalFilename);
+            mFile.createNewFile();
+            fileOut = new FileOutputStream(mFile);
+            writer = new OutputStreamWriter(fileOut);
+            writer.write(array.toString());
+        } finally {
+            if (writer != null)
+                writer.close();
+            if (fileOut != null)
+                fileOut.close();
+        }
+    }
+
+    public ArrayList<Racket> importRacketsJSON(String externalFilename) throws IOException, JSONException {
+        //Log.d(TAG, "RacketJSONSerializer(): calling importRacketsJSON()");
+
+        ArrayList<Racket> rackets = new ArrayList<Racket>();
+        FileInputStream fileIn = null;
+        BufferedReader reader = null;
+        try {
+            // open and read the file into a StringBuilder
+            File mFile = new File(externalFilename);
+            fileIn = new FileInputStream(mFile);
+            reader = new BufferedReader(new InputStreamReader(fileIn));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                // line breaks are omitted and irrelevant
+                jsonString.append(line);
+            }
+            // parse the JSON using JSONTokener
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+            // build the array of Rackets from JSONObjects
+            for (int i = 0; i < array.length(); i++) {
+                rackets.add(new Racket(array.getJSONObject(i)));
+            }
+        } catch (FileNotFoundException e) {
+            // we will ignore this one, since it happens when we start fresh
+        } finally {
+            if (reader != null)
+                reader.close();
+            if (fileIn != null)
+                fileIn.close();
+        }
+
+        return rackets;
     }
 }

@@ -2,8 +2,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".RacketActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
+    <item android:id="@+id/action_export_json"
+          android:title="Export JSON"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_import_json"
+          android:title="Import JSON"
           android:orderInCategory="100"
           app:showAsAction="never"/>
 </menu>

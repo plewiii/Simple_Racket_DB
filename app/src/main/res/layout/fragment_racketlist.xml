@@ -4,7 +4,8 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".RacketActivity$PlaceholderFragment">
+              tools:context=".RacketActivity$PlaceholderFragment"
+              android:background="#f7f7f7">
 
     <Button
         android:id="@+id/button_racketListAdd"
@@ -14,7 +15,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="left|center_vertical"
         android:drawableRight="@drawable/ic_action_new"
-        android:textColor="#00000000" />
+        android:textColor="#000000" />
 
     <ListView
         android:id="@+id/list_racketList"
