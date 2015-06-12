@@ -112,11 +112,6 @@ public class Racket {
         mComments = "None";
 
         mStrngDatas = new ArrayList<StrngData>();
-        //for (int i = 0; i < 10; i++) {
-        //    StrngData c = new StrngData();
-        //    c.setMainName("String #" + i);
-        //    mStrngDatas.add(c);
-        //}
 
         mImageDatas = new ArrayList<ImageData>();
     }
@@ -492,7 +487,6 @@ public class Racket {
         return mImageDatas;
     }
 
-    // This function is the same as RacketFragmentImagesTab
     // Tried adding to deleteImageData but caused crash (see RacketList:deleteRacket())
     public boolean deletePhoto(Uri photoUri) {
         File imageFile = new File(photoUri.getPath());    // Peter: kluge   photoUri causes compile error
@@ -504,12 +498,6 @@ public class Racket {
             //if (deleted) {
                 //Toast.makeText(getActivity(), "Deleting Image...:" + photoUri.toString(),
                 //        Toast.LENGTH_LONG).show();
-                // delete ?????: Drawable oldDrawable = photoImage.getDrawable();
-                // delete ?????: if (oldDrawable != null) {
-                // delete ?????:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
-                // delete ?????: }
-
-                // delete ?????: photoImage.setImageDrawable(null);
             //}
             //else {
                 //Toast.makeText(getActivity(), "Error: Image NOT deleted:" + photoUri.toString(),

@@ -31,14 +31,14 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        // See RacketFragment.java for 2 tab or 3 tab version
+        // See RacketFragment.java for number of tabs
 
-        // 2 tabs version: Racket, Strings
+        // 2 tabs version: Data, Strings
         /*
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
-            return racketFragmentDataTab;
+            RacketFragmentDataTab racket_dataTabFragment = new RacketFragmentDataTab();
+            return racket_dataTabFragment;
         }
         else // if the position is 1 we are returning the Second tab
         {
@@ -48,12 +48,12 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
         */
 
 
-        // 3 tabs: Racket, Strings, Images
+        // 3 tabs: Data, Strings, Images
         /*
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
-            return racketFragmentDataTab;
+            RacketFragmentDataTab racket_dataTabFragment = new RacketFragmentDataTab();
+            return racket_dataTabFragment;
         }
         else if(position == 1) // if the position is 1 we are returning the Second tab
         {
@@ -67,11 +67,11 @@ public class RacketViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         */
 
-        // 4 tabs: Racket, Strings, Images, Specs
+        // 4 tabs: Data, Strings, Images, Specs
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            RacketFragmentDataTab racketFragmentDataTab = new RacketFragmentDataTab();
-            return racketFragmentDataTab;
+            RacketFragmentDataTab racket_dataTabFragment = new RacketFragmentDataTab();
+            return racket_dataTabFragment;
         }
         else if(position == 1) // if the position is 1 we are returning the Second tab
         {

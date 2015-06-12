@@ -45,13 +45,6 @@ public class RacketList {
             mRackets = new ArrayList<Racket>();
             Log.e(TAG, "Error loading rackets: ", e);
         }
-
-        // Chapter 17: delete: mRackets = new ArrayList<Racket>();
-        // Chapter 16: delete: for (int i = 0; i < 100; i++) {
-        // Chapter 16: delete:     Racket c = new Racket();
-        // Chapter 16: delete:     c.setMfgModel("Racket #" + i);
-        // Chapter 16: delete:     mRackets.add(c);
-        // Chapter 16: delete: }
     }
 
     public static RacketList get(Context c) {
@@ -103,8 +96,9 @@ public class RacketList {
 
     public boolean exportRacketsJSON() {
         try {
-            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            // Peter: delete: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+            // Peter: delete:         Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            File mediaStorageDir = mAppContext.getExternalFilesDir("");
             String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
             mSerializer.exportRacketsJSON(mRackets, externalFilename);
             Log.d(TAG, "exportRacketsJSON()");
@@ -117,9 +111,14 @@ public class RacketList {
 
     public boolean importRacketsJSON() {
         try {
-            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
-            String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+            // Peter: use if import and export uses same location: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+            // Peter: use if import and export uses same location:         Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            // Peter: use if import and export uses same location: String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+
+            // racket.json is expected to be located in "download" folder
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            String externalFilename = path + File.separator + FILENAME;
+
             ArrayList<Racket> rackets = mSerializer.importRacketsJSON(externalFilename);
             // Replace racket list if valid data is imported
             if (rackets.size() > 0) {

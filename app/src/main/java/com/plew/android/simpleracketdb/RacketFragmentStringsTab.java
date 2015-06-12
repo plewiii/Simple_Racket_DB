@@ -35,10 +35,6 @@ public class RacketFragmentStringsTab extends Fragment {
 
     ArrayAdapter<StrngData> strngdata_adapter;
     private ArrayList<StrngData> mStrngDatas;
-    //String colors[] = {"red", "orange", "yellow", "greeen", "blue",
-    //        "indigo", "violet", "aqua", "black", "fuchsia",
-    //        "gray", "grey", "lime", "maroon", "navy",
-    //        "olive", "purple", "silver", "teal", "white"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,16 +72,12 @@ public class RacketFragmentStringsTab extends Fragment {
         });
 
         mRacketStringListView = (ListView)v.findViewById(R.id.list_racketStrings);
-        // colors: mRacketStringListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_racket_item, R.id.name, colors));
         strngdata_adapter = new ArrayAdapter<StrngData>(getActivity(), R.layout.list_racket_item, R.id.name, mStrngDatas);
         mRacketStringListView.setAdapter(strngdata_adapter);
 
         mRacketStringListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
-                //colors: String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
-                //colors: Log.d(TAG, "onItemClick(): " + name);
-
                 StrngData c = (StrngData)(strngdata_adapter.getItem(position));
                 //StrngData c = mStrngDatas.get(position);      // this does not use the strngdata_adapter
                 //Log.d(TAG, "onItemClick(): " + c.getName());
@@ -185,5 +177,4 @@ public class RacketFragmentStringsTab extends Fragment {
         // Showing Alert Message
         alertDialog.show();
     }
-
 }

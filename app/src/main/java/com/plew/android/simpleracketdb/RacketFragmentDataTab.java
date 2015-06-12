@@ -179,14 +179,7 @@ public class RacketFragmentDataTab extends Fragment {
 
         mRacketCommentsEditText = (EditText)v.findViewById(R.id.editText_RacketComments);
         mRacketCommentsEditText.setText(mRacket.getComments());
-
-
-
-
         mRacketCommentsEditText.clearFocus();   // kluge
-
-
-
 
         mRacketCommentsEditText.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence c, int start, int before, int count) {
@@ -202,8 +195,6 @@ public class RacketFragmentDataTab extends Fragment {
                 // this one too
             }
         });
-
-
 
         mRacketNameEditText.requestFocus();   // kluge
 
@@ -222,5 +213,4 @@ public class RacketFragmentDataTab extends Fragment {
             }
         }
     }
-
 }

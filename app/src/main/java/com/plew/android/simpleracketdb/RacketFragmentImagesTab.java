@@ -46,7 +46,7 @@ public class RacketFragmentImagesTab extends Fragment {
     Button mRacketImagesButton;
     ListView mRacketImageListView;
 
-    CustomArrayAdapter imagedata_adapter;   // ArrayAdapter<ImageData> imagedata_adapter;
+    CustomArrayAdapter imagedata_adapter;
     private ArrayList<ImageData> mImageDatas;
 
     @Override
@@ -98,7 +98,6 @@ public class RacketFragmentImagesTab extends Fragment {
         });
 
         //Peter: context menu to delete image does not work: registerForContextMenu(mRacketImageListView);
-
         // Workaround to delete image on long click
         mRacketImageListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -113,7 +112,6 @@ public class RacketFragmentImagesTab extends Fragment {
                 return true;
             }
         });
-
 
         return v;
     }
@@ -139,7 +137,7 @@ public class RacketFragmentImagesTab extends Fragment {
                 ImageData imagedata = new ImageData();
                 imagedata.setUri(photoUri);
 
-                mRacket.addImageData(imagedata);  //mImageDatas.add(imagedata);
+                mRacket.addImageData(imagedata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addImageData
                 // Peter: crashes: imagedata_adapter.notifyDataSetChanged();
                 imagedata_adapter = new CustomArrayAdapter(getActivity(), R.layout.list_racketimage_item,
@@ -167,7 +165,6 @@ public class RacketFragmentImagesTab extends Fragment {
                         Toast.LENGTH_LONG).show();
             } */
         }
-
     }
 
     //Peter: context menu to delete image does not work
@@ -284,8 +281,9 @@ public class RacketFragmentImagesTab extends Fragment {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), getActivity().getPackageName());
+        // Peter: delete: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+        // Peter: delete:         Environment.DIRECTORY_PICTURES), getActivity().getPackageName());
+        File mediaStorageDir = getActivity().getExternalFilesDir("");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -313,5 +311,4 @@ public class RacketFragmentImagesTab extends Fragment {
 
         return mediaFile;
     }
-
 }

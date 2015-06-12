@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#f7f7f7" >
+                android:background="#e8e8e8" >
 
     <Button
         android:id="@+id/button_racketImages"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="left|center_vertical"
-        android:drawableRight="@android:drawable/ic_menu_add"
+        android:drawableRight="@drawable/ic_action_new"
         android:textColor="#000000" />
 
     <ListView

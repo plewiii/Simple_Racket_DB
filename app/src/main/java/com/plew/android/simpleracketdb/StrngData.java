@@ -35,7 +35,7 @@ public class StrngData {
 
     private static final String JSON_STRNG_COMMENTS = "string_comments";
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");   // for testing
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
 
     private UUID mId;
     private Date mDate;

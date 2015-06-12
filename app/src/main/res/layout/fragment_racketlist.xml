@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context=".RacketActivity$PlaceholderFragment"
-              android:background="#f7f7f7">
+              android:background="#e8e8e8">
 
     <Button
         android:id="@+id/button_racketListAdd"

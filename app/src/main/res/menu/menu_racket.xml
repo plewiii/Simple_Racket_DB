@@ -10,4 +10,8 @@
           android:title="Import JSON"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/action_version"
+          android:title="Version"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
 </menu>

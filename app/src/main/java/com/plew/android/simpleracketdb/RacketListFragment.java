@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -33,57 +34,15 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
-/**
- * A simple {@link android.support.v4.app.Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link com.plew.android.simpleracketdb.RacketListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link com.plew.android.simpleracketdb.RacketListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RacketListFragment extends Fragment {
 
     private static final String TAG = "RacketListFragment";
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    // Orig: private static final String ARG_PARAM1 = "param1";
-    // Orig: private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    // Orig: private String mParam1;
-    // Orig: private String mParam2;
-
-    // Orig: private OnFragmentInteractionListener mListener;
 
     Button mRacketListAddButton;
     ListView mRacketListView;
 
     ArrayAdapter<Racket> racket_adapter;
     private ArrayList<Racket> mRackets;
-    // Peter: delete: String colors[] = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
-    // Peter: delete:         "Item 6", "Item 7", "Item 8", "Item 9", "Item 10",
-    // Peter: delete:         "Item 11", "Item 12", "Item 13", "Item 14", "Item 15",
-    // Peter: delete:         "Item 16", "Item 17", "Item 18", "Item 19", "Item 20"};
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RacketFragment.
-     */
-    // Orig: // TODO: Rename and change types and number of parameters
-    // Orig: public static RacketFragment newInstance(String param1, String param2) {
-    // Orig:    RacketFragment fragment = new RacketFragment();
-    // Orig:     Bundle args = new Bundle();
-    // Orig:     args.putString(ARG_PARAM1, param1);
-    // Orig:     args.putString(ARG_PARAM2, param2);
-    // Orig:     fragment.setArguments(args);
-    // Orig:     return fragment;
-    // Orig: }
 
     public RacketListFragment() {
         // Required empty public constructor
@@ -94,12 +53,6 @@ public class RacketListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Orig: if (getArguments() != null) {
-        // Orig:     mParam1 = getArguments().getString(ARG_PARAM1);
-        // Orig:     mParam2 = getArguments().getString(ARG_PARAM2);
-        // Orig: }
-
-        getActivity().setTitle("Racket List");
 
         mRackets = RacketList.get(getActivity()).getRackets();
         //Log.d(TAG, "RacketListFragment(): size: " + mRackets.size());
@@ -108,16 +61,16 @@ public class RacketListFragment extends Fragment {
         //    Log.d(TAG, "RacketListFragment(): " + i + ": " + mRackets.get(i).toString());
         //}
 
+        getActivity().setTitle("Racket List");
+        // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Orig: TextView textView = new TextView(getActivity());
-        // Orig: textView.setText(R.string.hello_blank_fragment);
-        /// Orig: return textView;
-
         View v = inflater.inflate(R.layout.fragment_racketlist, container, false);
 
         mRacketListAddButton = (Button)v.findViewById(R.id.button_racketListAdd);
@@ -139,16 +92,12 @@ public class RacketListFragment extends Fragment {
         });
 
         mRacketListView = (ListView)v.findViewById(R.id.list_racketList);
-        //colors: mRacketListView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_racket_item, R.id.name, colors));
         racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.name, mRackets);
         mRacketListView.setAdapter(racket_adapter);
 
         mRacketListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView< ?> parent, View view, int position, long id) {
-                //colors: String name = ((TextView) view.findViewById(R.id.name)).getText().toString();
-                //colors: Log.d(TAG, "onItemClick(): " + name);
-
                 Racket c = (Racket)(racket_adapter.getItem(position));
                 //Racket c = mRackets.get(position);      // this does not use the racket_adapter
                 //Log.d(TAG, "onItemClick(): " + c.getName());
@@ -216,7 +165,6 @@ public class RacketListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_export_json:
-                //Toast.makeText(getActivity(), "Export", Toast.LENGTH_SHORT).show();
                 boolean export_flag = RacketList.get(getActivity()).exportRacketsJSON();
                 if (export_flag)
                     Toast.makeText(getActivity(), "Export success", Toast.LENGTH_SHORT).show();
@@ -226,6 +174,10 @@ public class RacketListFragment extends Fragment {
             case R.id.action_import_json:
                 // Pop up dialog to confirm import
                 alertMessageImportJSON();
+                return true;
+            case R.id.action_version:
+                // Pop up dialog to display version
+                alertMessageVersion();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -309,95 +261,29 @@ public class RacketListFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void alertMessageVersion() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
+        // Setting Dialog Title
+        alertDialog.setTitle("Version");
 
-    // Orig: // TODO: Rename method, update argument and hook method into UI event
-    // Orig: public void onButtonPressed(Uri uri) {
-    // Orig:     if (mListener != null) {
-    // Orig:         mListener.onFragmentInteraction(uri);
-    // Orig:     }
-    // Orig: }
+        // Setting Dialog Message
+        alertDialog.setMessage("App Name: " + getString(R.string.app_name) + "\n" +
+                "Version: " + getString(R.string.app_version));
 
-    // Orig: @Override
-    // Orig: public void onAttach(Activity activity) {
-    // Orig:     super.onAttach(activity);
-    // Orig:     try {
-    // Orig:         mListener = (OnFragmentInteractionListener) activity;
-    // Orig:    } catch (ClassCastException e) {
-    // Orig:        throw new ClassCastException(activity.toString()
-    // Orig:                 + " must implement OnFragmentInteractionListener");
-    // Orig:     }
-    // Orig: }
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
 
-    // Orig: @Override
-    // Orig: public void onDetach() {
-    // Orig:     super.onDetach();
-    // Orig:     mListener = null;
-    // Orig: }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    // Orig: public interface OnFragmentInteractionListener {
-    // Orig:     // TODO: Update argument type and name
-    // Orig:     public void onFragmentInteraction(Uri uri);
-    // Orig: }
-
-}
-
-/* Peter
-
-//ArrayAdapter<Racket> adapter =
-        //        new ArrayAdapter<Racket>(getActivity(),
-        //                android.R.layout.simple_list_item_1,
-        //                mRackets);
-        //setListAdapter(adapter);
-
-RacketAdapter adapter = new RacketAdapter(mRackets);
-        setListAdapter(adapter);
-
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Racket c = (Racket)(getListAdapter()).getItem(position);
-        Log.d(TAG, c.getMfgModel() + " was clicked");
-    }
-
-    private class RacketAdapter extends ArrayAdapter<Racket> {
-        public RacketAdapter(ArrayList<Racket> rackets) {
-            super(getActivity(), android.R.layout.simple_list_item_1, rackets);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // if we weren't given a view, inflate one
-            if (null == convertView) {
-                convertView = getActivity().getLayoutInflater()
-                        .inflate(R.layout.list_racket_item, null);
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
+                // do nothing
+                dialog.cancel();
             }
+        });
 
-            // configure the view for this Racket
-            Racket c = getItem(position);
-
-            //TextView titleTextView =
-            //        (TextView)convertView.findViewById(R.id.crime_list_item_titleTextView);
-            //titleTextView.setText(c.getTitle());
-            //TextView dateTextView =
-            //        (TextView)convertView.findViewById(R.id.crime_list_item_dateTextView);
-            //dateTextView.setText(c.getDate().toString());
-            //CheckBox solvedCheckBox =
-            //        (CheckBox)convertView.findViewById(R.id.crime_list_item_solvedCheckBox);
-            //solvedCheckBox.setChecked(c.isSolved());
-
-            return convertView;
-        }
+        // Showing Alert Message
+        alertDialog.show();
     }
-
- */
+}
