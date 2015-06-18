@@ -461,6 +461,27 @@ public class Racket {
         // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
     }
 
+    public StrngData getStrngDataByLastDate() {
+        Date last_date;
+        StrngData returnStrngData;
+
+        returnStrngData = null;
+        if (mStrngDatas.size() > 0) {
+            last_date = mStrngDatas.get(0).getDate();
+            returnStrngData = mStrngDatas.get(0);
+
+            for (StrngData c : mStrngDatas) {
+                if (c.getDate().after(last_date)) {
+                    last_date = c.getDate();
+                    returnStrngData = c;
+                }
+
+            }
+        }
+
+        return returnStrngData;
+    }
+
     public ArrayList<StrngData> getStrngDatas() {
         return mStrngDatas;
     }

@@ -13,9 +13,8 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.plew.android.simpleracketdb.ImageData;
+import com.plew.android.simpleracketdb.StrngData;
 import com.plew.android.simpleracketdb.R;
 
 import java.io.File;
@@ -24,27 +23,34 @@ import java.util.ArrayList;
 /**
  * Created by Tim on 5/14/2015.
  */
-public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
+public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
 
     private final Activity context;
     private final int resource;
     private final int textViewResourceId;
     private final int imageViewResourceId;
-    private final ArrayList<ImageData> objects;
+    private final int textView2ResourceId;
+    private final int textView3ResourceId;
+    private final ArrayList<StrngData> objects;
 
     // View lookup cache
     private static class ViewHolder {
         TextView txtView;
         ImageView imageView;
+        TextView txtView2;
+        TextView txtView3;
     }
 
-    public CustomArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
-                              ArrayList<ImageData> objects) {
+    public StrngDataArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
+                                 int textView2ResourceId, int textView3ResourceId,
+                                 ArrayList<StrngData> objects) {
         super(context, 0, objects);  // super(context, resource, textViewResourceId, objects);
         this.context = context;
         this.resource = resource;
         this.textViewResourceId = textViewResourceId;
         this.imageViewResourceId = imageViewResourceId;
+        this.textView2ResourceId = textView2ResourceId;
+        this.textView3ResourceId = textView3ResourceId;
         this.objects = objects;
     }
 
@@ -64,6 +70,8 @@ public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
             holder = new ViewHolder();
             holder.txtView = (TextView) view.findViewById(textViewResourceId);
             holder.imageView = (ImageView) view.findViewById(imageViewResourceId);
+            holder.txtView2 = (TextView) view.findViewById(textView2ResourceId);
+            holder.txtView3 = (TextView) view.findViewById(textView3ResourceId);
             view.setTag(holder);
         }
         else
@@ -76,39 +84,11 @@ public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
         holder.txtView.setText(objects.get(position).toString());
 
         // Image
-        File imageFile = new File(objects.get(position).getUri().getPath());
-        if (imageFile.exists()){
-            //Toast.makeText(context, "imageFile.exists():" + position + " : " + objects.get(position).getUri(),
-            //        Toast.LENGTH_SHORT).show();
+        holder.imageView.setImageResource(R.mipmap.mystring);
 
-            // delete???: Drawable oldDrawable = holder.imageView.getDrawable();
-            // delete???: if (oldDrawable != null) {
-            // delete???:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
-            // delete???: }
-
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            // 1st try: holder.imageView.setImageBitmap(bitmap);    // gap issue
-            // 2nd try: holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));    // 120x120
-
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int width = size.x;
-            int height = size.y;
-            int scaleToUse = 20; // this will be our percentage
-            int sizeY = height * scaleToUse / 100;
-            int sizeX = bitmap.getWidth() * sizeY / bitmap.getHeight();
-            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, sizeX, sizeY, false));
-
-            // this works too: BitmapDrawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-            // this works too: holder.imageView.setImageDrawable(drawable);
-        }
-        else {
-            //Toast.makeText(context, "imageFile NOT exists():" + objects.get(position).getUri(),
-            //        Toast.LENGTH_LONG).show();
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        }
+        // Text2 and Text 3
+        holder.txtView2.setText("Mains: " + objects.get(position).getMainTension());
+        holder.txtView3.setText("Crosses: " + objects.get(position).getCrossTension());
 
         // Return the completed view to render on screen
         return view;

@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.plew.android.common.tabview.RacketArrayAdapter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +43,7 @@ public class RacketListFragment extends Fragment {
     Button mRacketListAddButton;
     ListView mRacketListView;
 
-    ArrayAdapter<Racket> racket_adapter;
+    RacketArrayAdapter racket_adapter;  // ArrayAdapter<Racket> racket_adapter;
     private ArrayList<Racket> mRackets;
 
     public RacketListFragment() {
@@ -92,7 +94,9 @@ public class RacketListFragment extends Fragment {
         });
 
         mRacketListView = (ListView)v.findViewById(R.id.list_racketList);
-        racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.name, mRackets);
+        // Peter: delete: racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.racket_item_text, mRackets);
+        racket_adapter = new RacketArrayAdapter(getActivity(), R.layout.list_racket_item, R.id.racket_item_text,
+                R.id.racket_item_image, R.id.racket_item_text2, R.id.racket_item_text3, mRackets);
         mRacketListView.setAdapter(racket_adapter);
 
         mRacketListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -240,7 +244,9 @@ public class RacketListFragment extends Fragment {
                     Toast.makeText(getActivity(), "Import success", Toast.LENGTH_SHORT).show();
                     mRackets = RacketList.get(getActivity()).getRackets();
                     // this call did not work: racket_adapter.notifyDataSetChanged();
-                    racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.name, mRackets);
+                    // Peter: delete: racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.racket_item_text, mRackets);
+                    racket_adapter = new RacketArrayAdapter(getActivity(), R.layout.list_racket_item, R.id.racket_item_text,
+                            R.id.racket_item_image, R.id.racket_item_text2, R.id.racket_item_text3, mRackets);
                     mRacketListView.setAdapter(racket_adapter);
                 }
                 else

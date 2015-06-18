@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -16,7 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.plew.android.common.tabview.StrngDataArrayAdapter;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 /**
@@ -30,10 +35,11 @@ public class RacketFragmentStringsTab extends Fragment {
 
     Racket mRacket;
 
+    Button mRacketCalendarButton;
     Button mRacketStringsButton;
     ListView mRacketStringListView;
 
-    ArrayAdapter<StrngData> strngdata_adapter;
+    StrngDataArrayAdapter strngdata_adapter;  // ArrayAdapter<StrngData> strngdata_adapter;
     private ArrayList<StrngData> mStrngDatas;
 
     @Override
@@ -51,6 +57,16 @@ public class RacketFragmentStringsTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.fragment_racketstringstab,container,false);
+
+        mRacketCalendarButton = (Button)v.findViewById(R.id.button_racketCalendar);
+        mRacketCalendarButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Log.d(TAG, "onClick(): mRacketCalendarButton");
+
+                // Perform action on click
+                addCalendarEvent();
+            }
+        });
 
         mRacketStringsButton = (Button)v.findViewById(R.id.button_racketStrings);
         mRacketStringsButton.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +88,9 @@ public class RacketFragmentStringsTab extends Fragment {
         });
 
         mRacketStringListView = (ListView)v.findViewById(R.id.list_racketStrings);
-        strngdata_adapter = new ArrayAdapter<StrngData>(getActivity(), R.layout.list_racket_item, R.id.name, mStrngDatas);
+        // Peter: delete: strngdata_adapter = new ArrayAdapter<StrngData>(getActivity(), R.layout.list_racket_item, R.id.racket_item_text, mStrngDatas);
+        strngdata_adapter = new StrngDataArrayAdapter(getActivity(), R.layout.list_racket_item, R.id.racket_item_text,
+                R.id.racket_item_image, R.id.racket_item_text2, R.id.racket_item_text3, mStrngDatas);
         mRacketStringListView.setAdapter(strngdata_adapter);
 
         mRacketStringListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,5 +194,38 @@ public class RacketFragmentStringsTab extends Fragment {
 
         // Showing Alert Message
         alertDialog.show();
+    }
+
+    private void addCalendarEvent(){
+        // Peter: http://code.tutsplus.com/tutorials/android-essentials-adding-events-to-the-users-calendar--mobile-8363
+        // Crashes: Intent intent = new Intent(Intent.ACTION_INSERT);
+        // Crashes: intent.setData(CalendarContract.Events.CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_EDIT);   // ACTION_INSERT causes crash
+        intent.setType("vnd.android.cursor.item/event");
+
+        intent.putExtra(CalendarContract.Events.TITLE, "Restring: " + mRacket.getName());
+
+        StrngData c = mRacket.getStrngDataByLastDate();  // retrieve string data
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        if (c == null) {
+            // No string data - use racket data
+            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, mRacket.getPurchaseLocation());
+            intent.putExtra(CalendarContract.Events.DESCRIPTION, "String Tension: " + mRacket.getStringTension());
+        }
+        else {
+            // Use string data
+            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, c.getLocation());
+            intent.putExtra(CalendarContract.Events.DESCRIPTION, "Last String Date: " + sdf.format(c.getDate()) +
+                    "\nMains: " + c.getMainTension() + "\nCrosses: "  + c.getCrossTension());
+        }
+
+        GregorianCalendar calDate = new GregorianCalendar();  // default to today's date
+        intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                calDate.getTimeInMillis());
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                calDate.getTimeInMillis());
+
+        startActivity(intent);
     }
 }

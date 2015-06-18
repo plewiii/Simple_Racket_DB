@@ -133,7 +133,7 @@ public class StrngData {
 
     @Override
     public String toString() {
-        return sdf.format(mDate) + ": " + getName();
+        return sdf.format(mDate);
     }
 
     public UUID getId() {
