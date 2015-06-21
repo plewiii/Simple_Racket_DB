@@ -5,22 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.plew.android.common.tabview.CustomArrayAdapter;
+import com.plew.android.common.tabview.ImageDataArrayAdapter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -46,7 +42,7 @@ public class RacketFragmentImagesTab extends Fragment {
     Button mRacketImagesButton;
     ListView mRacketImageListView;
 
-    CustomArrayAdapter imagedata_adapter;
+    ImageDataArrayAdapter imagedata_adapter;
     private ArrayList<ImageData> mImageDatas;
 
     @Override
@@ -81,7 +77,7 @@ public class RacketFragmentImagesTab extends Fragment {
         });
 
         mRacketImageListView = (ListView)v.findViewById(R.id.list_racketImages);
-        imagedata_adapter = new CustomArrayAdapter(getActivity(), R.layout.list_racketimage_item,
+        imagedata_adapter = new ImageDataArrayAdapter(getActivity(), R.layout.list_racketimage_item,
                 R.id.racket_image_name, R.id.racket_image, mImageDatas);
         mRacketImageListView.setAdapter(imagedata_adapter);
 
@@ -140,7 +136,7 @@ public class RacketFragmentImagesTab extends Fragment {
                 mRacket.addImageData(imagedata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addImageData
                 // Peter: crashes: imagedata_adapter.notifyDataSetChanged();
-                imagedata_adapter = new CustomArrayAdapter(getActivity(), R.layout.list_racketimage_item,
+                imagedata_adapter = new ImageDataArrayAdapter(getActivity(), R.layout.list_racketimage_item,
                         R.id.racket_image_name, R.id.racket_image, mImageDatas);
                 mRacketImageListView.setAdapter(imagedata_adapter);
 

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by Tim on 5/14/2015.
  */
-public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
+public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
 
     private final Activity context;
     private final int resource;
@@ -38,8 +38,8 @@ public class CustomArrayAdapter extends ArrayAdapter<ImageData> {
         ImageView imageView;
     }
 
-    public CustomArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
-                              ArrayList<ImageData> objects) {
+    public ImageDataArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
+                                 ArrayList<ImageData> objects) {
         super(context, 0, objects);  // super(context, resource, textViewResourceId, objects);
         this.context = context;
         this.resource = resource;

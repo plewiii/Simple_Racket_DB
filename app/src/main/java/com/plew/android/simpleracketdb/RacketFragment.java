@@ -1,5 +1,7 @@
 package com.plew.android.simpleracketdb;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -60,7 +62,9 @@ public class RacketFragment extends Fragment {
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
         mRacket = RacketList.get(getActivity()).getRacket(racketId);
 
+        // Action Bar - Title, Background
         getActivity().setTitle(mRacket.getName());    // "Racket Data"
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
         setHasOptionsMenu(true);
     }

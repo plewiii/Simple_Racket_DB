@@ -2,10 +2,13 @@ package com.plew.android.simpleracketdb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -92,8 +95,10 @@ public class StrngDataFragment extends Fragment {
         // chapter 10: flexible method: UUID stringId = (UUID)getArguments().getSerializable(EXTRA_STRINGDATA_ID);  // chapter 10: flexible method:
         mStrngData = RacketList.get(getActivity()).getRacket(racketId).getStrngData(stringId);
 
+        // Action Bar - Title, Background
         Racket mRacket = RacketList.get(getActivity()).getRacket(racketId);  // mRacket is local
         getActivity().setTitle(mRacket.getName() + " - " + mStrngData.getName());  // "String Data"
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
         setHasOptionsMenu(true);
     }

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class RacketFragmentDataTab extends Fragment {
 
     Racket mRacket;
 
+    ScrollView mRacketDataTabScrollView;     // kluge
     EditText mRacketNameEditText;
     AutoCompleteTextView mRacketMfgModelAutoCompleteTextView;
     EditText mRacketSerialNumberEditText;
@@ -74,6 +76,8 @@ public class RacketFragmentDataTab extends Fragment {
         //Log.d(TAG, "onCreateView(): ");
 
         View v = inflater.inflate(R.layout.fragment_racketdatatab, container, false);
+
+        mRacketDataTabScrollView = (ScrollView)v.findViewById(R.id.scrollView_RacketDataTab);  // Use for kluge
 
         mRacketNameEditText = (EditText)v.findViewById(R.id.editText_RacketName);
         mRacketNameEditText.setText(mRacket.getName());
@@ -197,6 +201,7 @@ public class RacketFragmentDataTab extends Fragment {
         });
 
         mRacketNameEditText.requestFocus();   // kluge
+        mRacketDataTabScrollView.smoothScrollTo(0,0);    // kluge
 
         return v;
     }
@@ -212,5 +217,16 @@ public class RacketFragmentDataTab extends Fragment {
                 updateDate();
             }
         }
+    }
+
+    // Kluge - this put focus back at top of page
+    //@Override
+    public void onScrollToTop() {
+        //Log.d(TAG, "onResume(): ");
+        //super.onResume();
+
+        //mRacketDataTabScrollView.fullScroll(View.FOCUS_UP);
+        //mRacketDataTabScrollView.pageScroll(View.FOCUS_UP);
+        mRacketDataTabScrollView.smoothScrollTo(0,0);
     }
 }

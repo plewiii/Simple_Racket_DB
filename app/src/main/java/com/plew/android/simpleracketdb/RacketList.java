@@ -96,10 +96,14 @@ public class RacketList {
 
     public boolean exportRacketsJSON() {
         try {
-            // Peter: delete: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-            // Peter: delete:         Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
-            File mediaStorageDir = mAppContext.getExternalFilesDir("");
-            String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+            // Peter: Pictures folder: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+            // Peter: Pictures folder:         Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
+            // Peter: Android folder: File mediaStorageDir = mAppContext.getExternalFilesDir("");
+            // Peter: Android folder: String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
+
+            // Download folder
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            String externalFilename = path + File.separator + FILENAME;
             mSerializer.exportRacketsJSON(mRackets, externalFilename);
             Log.d(TAG, "exportRacketsJSON()");
             return true;
@@ -111,11 +115,7 @@ public class RacketList {
 
     public boolean importRacketsJSON() {
         try {
-            // Peter: use if import and export uses same location: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-            // Peter: use if import and export uses same location:         Environment.DIRECTORY_PICTURES), mAppContext.getPackageName());
-            // Peter: use if import and export uses same location: String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
-
-            // racket.json is expected to be located in "download" folder
+            // racket.json is expected to be located in Download folder
             File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             String externalFilename = path + File.separator + FILENAME;
 

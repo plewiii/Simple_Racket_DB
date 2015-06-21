@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -63,9 +65,12 @@ public class RacketListFragment extends Fragment {
         //    Log.d(TAG, "RacketListFragment(): " + i + ": " + mRackets.get(i).toString());
         //}
 
+        // Action Bar - Title, Background
         getActivity().setTitle("Racket List");
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayUseLogoEnabled(true);
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
+
 
         setHasOptionsMenu(true);
     }
@@ -169,11 +174,8 @@ public class RacketListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_export_json:
-                boolean export_flag = RacketList.get(getActivity()).exportRacketsJSON();
-                if (export_flag)
-                    Toast.makeText(getActivity(), "Export success", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getActivity(), "Export failed", Toast.LENGTH_SHORT).show();
+                // Pop up dialog to confirm export
+                alertMessageExportJSON();
                 return true;
             case R.id.action_import_json:
                 // Pop up dialog to confirm import
@@ -222,6 +224,44 @@ public class RacketListFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void alertMessageExportJSON() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Confirm Export ...");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("rackets.json will be written to the Download folder.");
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
+
+                boolean export_flag = RacketList.get(getActivity()).exportRacketsJSON();
+                if (export_flag)
+                    Toast.makeText(getActivity(), "Export success", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getActivity(), "Export failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     private void alertMessageImportJSON() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
@@ -229,7 +269,8 @@ public class RacketListFragment extends Fragment {
         alertDialog.setTitle("Confirm Import ...");
 
         // Setting Dialog Message
-        alertDialog.setMessage("Warning: racket data and images will be deleted!!!!");
+        alertDialog.setMessage("rackets.json must be located in the Download folder.\n\n" +
+                "Warning: racket data and images will be deleted!!!!");
 
         // Setting Icon to Dialog
         //alertDialog.setIcon(R.drawable.delete);
