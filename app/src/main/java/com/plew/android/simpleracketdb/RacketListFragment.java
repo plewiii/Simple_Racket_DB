@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -69,8 +71,6 @@ public class RacketListFragment extends Fragment {
         getActivity().setTitle("Racket List");
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayUseLogoEnabled(true);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
-
 
         setHasOptionsMenu(true);
     }
@@ -242,8 +242,19 @@ public class RacketListFragment extends Fragment {
                 // Yes button clicked
 
                 boolean export_flag = RacketList.get(getActivity()).exportRacketsJSON();
-                if (export_flag)
+                if (export_flag) {
                     Toast.makeText(getActivity(), "Export success", Toast.LENGTH_SHORT).show();
+
+                    // Create an intent to send the file
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
+                            File.separator + RacketList.FILENAME);   // this needs to match external file name in exportRacketsJSON()
+                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "SimpleRacketDB:" + RacketList.FILENAME);
+                    intent = Intent.createChooser(intent, "Send " + RacketList.FILENAME);  // Chapter 21, page 353
+                    startActivity(intent);
+                }
                 else
                     Toast.makeText(getActivity(), "Export failed", Toast.LENGTH_SHORT).show();
             }

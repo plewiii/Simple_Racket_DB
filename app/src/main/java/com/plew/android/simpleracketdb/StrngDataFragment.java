@@ -98,7 +98,6 @@ public class StrngDataFragment extends Fragment {
         // Action Bar - Title, Background
         Racket mRacket = RacketList.get(getActivity()).getRacket(racketId);  // mRacket is local
         getActivity().setTitle(mRacket.getName() + " - " + mStrngData.getName());  // "String Data"
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
         setHasOptionsMenu(true);
     }

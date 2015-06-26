@@ -64,7 +64,6 @@ public class RacketFragment extends Fragment {
 
         // Action Bar - Title, Background
         getActivity().setTitle(mRacket.getName());    // "Racket Data"
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33B5E5")));
 
         setHasOptionsMenu(true);
     }

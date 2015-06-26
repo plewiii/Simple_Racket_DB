@@ -1,6 +1,7 @@
 package com.plew.android.simpleracketdb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class RacketList {
 
     private static final String TAG = "RacketList";
-    private static final String FILENAME = "rackets.json";
+    public static final String FILENAME = "rackets.json";  // private, made public because it is used in RacketListFragment.java
 
     private ArrayList<Racket> mRackets;
     private RacketJSONSerializer mSerializer;
@@ -106,6 +107,7 @@ public class RacketList {
             String externalFilename = path + File.separator + FILENAME;
             mSerializer.exportRacketsJSON(mRackets, externalFilename);
             Log.d(TAG, "exportRacketsJSON()");
+
             return true;
         } catch (Exception e) {
             Log.e(TAG, "exportRacketsJSON(): Error saving Rackets to External Drive: " + e);
