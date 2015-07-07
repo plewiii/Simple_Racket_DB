@@ -47,6 +47,9 @@ public class Racket {
 
     private static final String JSON_RACKET_COMMENTS = "racket_comments";
 
+    // Future development: private static final String JSON_RACKET_TEST1 = "racket_test1";  // Placeholder for future development
+    // Future development: private static final String JSON_RACKET_TEST2 = "racket_test2";
+
     private static final String JSON_RACKET_STRNGDATA = "racket_strngdata";
 
     private static final String JSON_RACKET_IMAGEDATA = "racket_imagedata";
@@ -77,6 +80,9 @@ public class Racket {
     private String mStringTension;
 
     private String mComments;
+
+    // Future development: private Integer mTest1;  // Placeholder for future development
+    // Future development: private Integer mTest2;
 
     private ArrayList<StrngData> mStrngDatas;
 
@@ -111,13 +117,16 @@ public class Racket {
 
         mComments = "None";
 
+        // Future development: mTest1 = 1111;   // Placeholder for future development
+        // Future development: mTest2 = 2222;
+
         mStrngDatas = new ArrayList<StrngData>();
 
         mImageDatas = new ArrayList<ImageData>();
     }
 
-    public Racket(JSONObject json) throws JSONException {
-        //Log.d(TAG, "Racket(JSONObject json): ");
+    public Racket(JSONObject json, int jsonVersion) throws JSONException {
+        //Log.d(TAG, "Racket(JSONObject json, int jsonVersion): ");
         mId = UUID.fromString(json.getString(JSON_RACKET_ID));
         mDate = new Date(json.getLong(JSON_RACKET_DATE));
 
@@ -145,28 +154,40 @@ public class Racket {
 
         mComments = json.getString(JSON_RACKET_COMMENTS);
 
+        // Version test - Placeholder for future development
+        // Future development: Log.d(TAG, "Racket(JSONObject json, int jsonVersion): jsonVersion:" + jsonVersion);
+        // Future development: if (jsonVersion == 1) {
+        // Future development:     mTest1 = json.getInt(JSON_RACKET_TEST1);
+        // Future development:     mTest2 = json.getInt(JSON_RACKET_TEST2);
+        // Future development:     Log.d(TAG, "Racket(JSONObject json, int jsonVersion): JSON_RACKET_TEST1:" + mTest1);
+        // Future development:     Log.d(TAG, "Racket(JSONObject json, int jsonVersion): JSON_RACKET_TEST2:" + mTest2);
+        // Future development: }
+        // Future development: else {  // jsonVersion == 0
+        // Future development:     mTest1 = 101;  // set to bogus value
+        // Future development:     mTest2 = 102;
+        // Future development: }
+
         JSONArray jsonStrngDataArray = json.getJSONArray(JSON_RACKET_STRNGDATA);
         mStrngDatas = new ArrayList<StrngData>();
         for (int i = 0; i < jsonStrngDataArray.length(); i++) {
             JSONObject jsonStrngDataObj = jsonStrngDataArray.getJSONObject(i);
-            StrngData c = new StrngData(jsonStrngDataObj);
+            StrngData c = new StrngData(jsonStrngDataObj, jsonVersion);
             mStrngDatas.add(c);
         }
-        //Log.d(TAG, "Racket(JSONObject json): mStrngDatas.size():" + mStrngDatas.size());
+        //Log.d(TAG, "Racket(JSONObject json, int jsonVersion): mStrngDatas.size():" + mStrngDatas.size());
 
         JSONArray jsonImageDataArray = json.getJSONArray(JSON_RACKET_IMAGEDATA);
         mImageDatas = new ArrayList<ImageData>();
         for (int i = 0; i < jsonImageDataArray.length(); i++) {
             JSONObject jsonImageDataObj = jsonImageDataArray.getJSONObject(i);
-            ImageData c = new ImageData(jsonImageDataObj);
+            ImageData c = new ImageData(jsonImageDataObj, jsonVersion);
             mImageDatas.add(c);
         }
-        //Log.d(TAG, "Racket(JSONObject json): mImageDatas.size():" + mImageDatas.size());
-
+        //Log.d(TAG, "Racket(JSONObject json, int jsonVersion): mImageDatas.size():" + mImageDatas.size());
     }
 
-    public JSONObject toJSON() throws JSONException {
-        //Log.d(TAG, "toJSON(): ");
+    public JSONObject toJSON(int jsonVersion) throws JSONException {
+        //Log.d(TAG, "toJSON(int jsonVersion): ");
         JSONObject json = new JSONObject();
 
         json.put(JSON_RACKET_ID, mId.toString());
@@ -196,10 +217,19 @@ public class Racket {
 
         json.put(JSON_RACKET_COMMENTS, mComments);
 
+        // Version test  - Placeholder for future development
+        // Future development: Log.d(TAG, "toJSON(int jsonVersion): jsonVersion:" + jsonVersion);
+        // Future development: if (jsonVersion == 1) {
+        // Future development:     Log.d(TAG, "toJSON(int jsonVersion): JSON_RACKET_TEST1:" + mTest1);
+        // Future development:     Log.d(TAG, "toJSON(int jsonVersion): JSON_RACKET_TEST2:" + mTest2);
+        // Future development:     json.put(JSON_RACKET_TEST1, mTest1);
+        // Future development:     json.put(JSON_RACKET_TEST2, mTest2);
+        // Future development: }
+
         // Add Strings - need json array to hold the list
         JSONArray jsonStrngDataArray = new JSONArray();
         for (StrngData c : mStrngDatas) {
-            JSONObject jsonStrngDataObj = c.toJSON();
+            JSONObject jsonStrngDataObj = c.toJSON(jsonVersion);
             jsonStrngDataArray.put(jsonStrngDataObj);
         }
         json.put(JSON_RACKET_STRNGDATA, jsonStrngDataArray);
@@ -207,7 +237,7 @@ public class Racket {
         // Add Images - need json array to hold the list
         JSONArray jsonImageDataArray = new JSONArray();
         for (ImageData c : mImageDatas) {
-            JSONObject jsonImageDataObj = c.toJSON();
+            JSONObject jsonImageDataObj = c.toJSON(jsonVersion);
             jsonImageDataArray.put(jsonImageDataObj);
         }
         json.put(JSON_RACKET_IMAGEDATA, jsonImageDataArray);

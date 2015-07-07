@@ -35,6 +35,9 @@ public class StrngData {
 
     private static final String JSON_STRNG_COMMENTS = "string_comments";
 
+    // Future development: private static final String JSON_STRNG_TEST1 = "string_test1";  // Placeholder for future development
+    // Future development: private static final String JSON_STRNG_TEST2 = "string_test2";
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
 
     private UUID mId;
@@ -56,6 +59,9 @@ public class StrngData {
     private boolean mCrossPrestretch;
 
     private String mComments;
+
+    // Future development: private Integer mTest1;  // Placeholder for future development
+    // Future development: private Integer mTest2;
 
     public StrngData() {
         mId = UUID.randomUUID();
@@ -79,10 +85,13 @@ public class StrngData {
         mCrossPrestretch = false;
 
         mComments = "None";
+
+        // Future development: mTest1 = 3333;   // Placeholder for future development
+        // Future development: mTest2 = 4444;
     }
 
-    public StrngData(JSONObject json) throws JSONException {
-        //Log.d(TAG, "StrngData(JSONObject json): ");
+    public StrngData(JSONObject json, int jsonVersion) throws JSONException {
+        //Log.d(TAG, "StrngData(JSONObject json, int jsonVersion): ");
         mId = UUID.fromString(json.getString(JSON_STRNG_ID));
         mDate = new Date(json.getLong(JSON_STRNG_DATE));
 
@@ -102,10 +111,23 @@ public class StrngData {
         mCrossPrestretch = json.getBoolean(JSON_STRNG_CROSS_PRESTRETCH);
 
         mComments = json.getString(JSON_STRNG_COMMENTS);
+
+        // Version test - Placeholder for future development
+        // Future development: Log.d(TAG, "StrngData(JSONObject json, int jsonVersion): jsonVersion:" + jsonVersion);
+        // Future development: if (jsonVersion == 1) {
+        // Future development:     mTest1 = json.getInt(JSON_STRNG_TEST1);
+        // Future development:     mTest2 = json.getInt(JSON_STRNG_TEST2);
+        // Future development:     Log.d(TAG, "StrngData(JSONObject json, int jsonVersion): JSON_STRNG_TEST1:" + mTest1);
+        // Future development:     Log.d(TAG, "StrngData(JSONObject json, int jsonVersion): JSON_STRNG_TEST2:" + mTest2);
+        // Future development: }
+        // Future development: else {  // jsonVersion == 0
+        // Future development:     mTest1 = 103;  // set to bogus value
+        // Future development:     mTest2 = 104;
+        // Future development: }
     }
 
-    public JSONObject toJSON() throws JSONException {
-        //Log.d(TAG, "toJSON(): ");
+    public JSONObject toJSON(int jsonVersion) throws JSONException {
+        //Log.d(TAG, "toJSON(int jsonVersion): ");
         JSONObject json = new JSONObject();
 
         json.put(JSON_STRNG_ID, mId.toString());
@@ -127,6 +149,15 @@ public class StrngData {
         json.put(JSON_STRNG_CROSS_PRESTRETCH, mCrossPrestretch);
 
         json.put(JSON_STRNG_COMMENTS, mComments);
+
+        // Version test  - Placeholder for future development
+        // Future development: Log.d(TAG, "toJSON(int jsonVersion): jsonVersion:" + jsonVersion);
+        // Future development: if (jsonVersion == 1) {
+        // Future development:     Log.d(TAG, "toJSON(int jsonVersion): JSON_RACKET_TEST1:" + mTest1);
+        // Future development:     Log.d(TAG, "toJSON(int jsonVersion): JSON_RACKET_TEST2:" + mTest2);
+        // Future development:     json.put(JSON_STRNG_TEST1, mTest1);
+        // Future development:     json.put(JSON_STRNG_TEST2, mTest2);
+        // Future development: }
 
         return json;
     }

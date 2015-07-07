@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
@@ -26,8 +27,12 @@ import java.util.ArrayList;
 public class RacketJSONSerializer {
     private static final String TAG = "RacketJSONSerializer";
 
+    private static final String JSON_SERIALIZER_VERSION = "serializer_version";
+
     private Context mContext;
     private String mFilename;
+
+    private Integer mJSONSerializerVersion = 0;   // version to save and export, 0 is starting version
 
     public RacketJSONSerializer(Context c, String f) {
         mContext = c;
@@ -49,11 +54,29 @@ public class RacketJSONSerializer {
                 // line breaks are omitted and irrelevant
                 jsonString.append(line);
             }
+
             // parse the JSON using JSONTokener
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
+
+            // the first item in the  JSONObject is the version
+            int mVersion = mJSONSerializerVersion;
+            //Log.d(TAG, "RacketJSONSerializer(): loadRackets(): length(): " + array.length());
+            if (array.length() > 0) {
+                JSONObject json = array.getJSONObject(0);
+                mVersion = json.getInt(JSON_SERIALIZER_VERSION);
+                //Log.d(TAG, "RacketJSONSerializer(): loadRackets(): mVersion: " + mVersion);
+            }
+
             // build the array of Rackets from JSONObjects
-            for (int i = 0; i < array.length(); i++) {
-                rackets.add(new Racket(array.getJSONObject(i)));
+            if (array.length() > 1) {
+                for (int i = 1; i < array.length(); i++) {
+                    rackets.add(new Racket(array.getJSONObject(i), mVersion));
+                }
+            }
+
+            // Save rackets if different json versions
+            if (mVersion != mJSONSerializerVersion) {
+                saveRackets(rackets);
             }
         } catch (FileNotFoundException e) {
             // we will ignore this one, since it happens when we start fresh
@@ -70,8 +93,16 @@ public class RacketJSONSerializer {
 
         // build an array in JSON
         JSONArray array = new JSONArray();
+
+        // put version into array
+        //Log.d(TAG, "RacketJSONSerializer(): saveRackets(): mJSONSerializerVersion: "  + mJSONSerializerVersion);
+        JSONObject json = new JSONObject();
+        json.put(JSON_SERIALIZER_VERSION, mJSONSerializerVersion);
+        array.put(json);
+
+        // put rackets into array
         for (Racket c : rackets)
-            array.put(c.toJSON());
+            array.put(c.toJSON(mJSONSerializerVersion));
 
         // write the file to disk
         Writer writer = null;
@@ -90,8 +121,16 @@ public class RacketJSONSerializer {
 
         // build an array in JSON
         JSONArray array = new JSONArray();
+
+        // put version into array
+        //Log.d(TAG, "RacketJSONSerializer(): exportRacketsJSON(): mJSONSerializerVersion: "  + mJSONSerializerVersion);
+        JSONObject json = new JSONObject();
+        json.put(JSON_SERIALIZER_VERSION, mJSONSerializerVersion);
+        array.put(json);
+
+        // put rackets into array
         for (Racket c : rackets)
-            array.put(c.toJSON());
+            array.put(c.toJSON(mJSONSerializerVersion));
 
         // write the file to disk
         FileOutputStream fileOut = null;
@@ -127,12 +166,28 @@ public class RacketJSONSerializer {
                 // line breaks are omitted and irrelevant
                 jsonString.append(line);
             }
+
             // parse the JSON using JSONTokener
             JSONArray array = (JSONArray) new JSONTokener(jsonString.toString()).nextValue();
-            // build the array of Rackets from JSONObjects
-            for (int i = 0; i < array.length(); i++) {
-                rackets.add(new Racket(array.getJSONObject(i)));
+
+            // the first item in the  JSONObject is the version
+            int mVersion = mJSONSerializerVersion;
+            //Log.d(TAG, "RacketJSONSerializer(): importRacketsJSON(): length(): " + array.length());
+            if (array.length() > 0) {
+                JSONObject json = array.getJSONObject(0);
+                mVersion = json.getInt(JSON_SERIALIZER_VERSION);
+                //Log.d(TAG, "RacketJSONSerializer(): importRacketsJSON(): mVersion: " + mVersion);
             }
+
+            // build the array of Rackets from JSONObjects
+            if (array.length() > 1) {
+                for (int i = 1; i < array.length(); i++) {
+                    rackets.add(new Racket(array.getJSONObject(i), mVersion));
+                }
+            }
+
+            // Save rackets after import (this is different than loadRackets())
+            saveRackets(rackets);
         } catch (FileNotFoundException e) {
             // we will ignore this one, since it happens when we start fresh
         } finally {

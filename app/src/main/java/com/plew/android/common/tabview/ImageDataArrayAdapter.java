@@ -107,7 +107,7 @@ public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
         else {
             //Toast.makeText(context, "imageFile NOT exists():" + objects.get(position).getUri(),
             //        Toast.LENGTH_LONG).show();
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+            holder.imageView.setImageResource(R.mipmap.srdb_racket);
         }
 
         // Return the completed view to render on screen
