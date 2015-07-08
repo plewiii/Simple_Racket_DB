@@ -10,6 +10,10 @@
           android:title="Import JSON"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/action_tutorial"
+          android:title="Quick Tutorial"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
     <item android:id="@+id/action_version"
           android:title="Version"
           android:orderInCategory="100"

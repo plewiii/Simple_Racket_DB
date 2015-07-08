@@ -75,8 +75,8 @@ public class RacketFragmentStringsTab extends Fragment {
 
                 StrngData strngdata = new StrngData();
 
-                int size = mRacket.getStrngDatas().size();
-                strngdata.setName("String #" + Integer.toString(size));  // kluge: rename the string
+                // int size = mRacket.getStrngDatas().size();  // "String #" + Integer.toString(size)
+                strngdata.setName("My String");  // kluge: rename the string
 
                 mRacket.addStrngData(strngdata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addStrngData

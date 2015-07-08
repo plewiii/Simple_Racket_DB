@@ -87,8 +87,8 @@ public class RacketListFragment extends Fragment {
 
                 Racket racket = new Racket();
 
-                int size = RacketList.get(getActivity()).getRackets().size();
-                racket.setName("Racket #" + Integer.toString(size));  // kluge: rename the racket
+                // int size = RacketList.get(getActivity()).getRackets().size();   // "Racket #" + Integer.toString(size)
+                racket.setName("My Racket");  // kluge: rename the racket
 
                 RacketList.get(getActivity()).addRacket(racket);
                 Intent i = new Intent(getActivity(), RacketActivity.class);
@@ -180,6 +180,10 @@ public class RacketListFragment extends Fragment {
             case R.id.action_import_json:
                 // Pop up dialog to confirm import
                 alertMessageImportJSON();
+                return true;
+            case R.id.action_tutorial:
+                // Pop up dialog to display tutorial
+                alertMessageTutorial();
                 return true;
             case R.id.action_version:
                 // Pop up dialog to display version
@@ -310,6 +314,46 @@ public class RacketListFragment extends Fragment {
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // No button clicked
+                // do nothing
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void alertMessageTutorial() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Quick Tutorial");
+
+        // Setting Dialog Message
+        alertDialog.setMessage(
+                "CREATE\n" +
+                "1. Racket:\n" + "Racket List page. Press Add Racket\n" +
+                "2. String:\n" + "STRINGS tab. Press Add String\n" +
+                "3. Image:\n" + "IMAGES tab. Press Add Image\n" +
+                "\n" +
+                "DELETE\n" +
+                "1. Image:\n" + "IMAGES tab. Long press on single image\n" +
+                "2. String:\n" + "STRINGS tab. Long press on single string\n" +
+                "3. Racket:\n" + "Racket List page. Long press on single racket\n" +
+                "\n" +
+                "ADVANCE: Transfer database between devices\n" +
+                "1. Export JSON:\n" + "Racket List page. Options menu. Press Export JSON\n" +
+                "2. Import JSON:\n" + "Racket List page. Options menu. Press Import JSON\n"
+        );
+
+
+        // Setting Icon to Dialog
+        //alertDialog.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                // Yes button clicked
                 // do nothing
                 dialog.cancel();
             }
