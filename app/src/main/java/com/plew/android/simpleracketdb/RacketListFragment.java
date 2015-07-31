@@ -68,7 +68,7 @@ public class RacketListFragment extends Fragment {
         //}
 
         // Action Bar - Title, Background
-        getActivity().setTitle("Racket List");
+        // Modify Action Bar Title: getActivity().setTitle("Racket List");
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         // Icon does not display: ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayUseLogoEnabled(true);
 

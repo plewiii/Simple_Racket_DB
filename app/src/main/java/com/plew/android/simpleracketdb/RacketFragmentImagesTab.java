@@ -1,8 +1,10 @@
 package com.plew.android.simpleracketdb;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,8 +36,8 @@ public class RacketFragmentImagesTab extends Fragment {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 200;
 
-    private Uri fileUri;
-    private Uri photoUri;
+    private final static String FILE_URI_KEY = "fileUri";
+    private Uri fileUri;    // Peter: this value needs to persist, see Method 2 at bottom
 
     Racket mRacket;
 
@@ -55,6 +57,8 @@ public class RacketFragmentImagesTab extends Fragment {
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
         mRacket = RacketList.get(getActivity()).getRacket(racketId);
         mImageDatas = mRacket.getImageDatas();
+
+        // Peter: this works but decided to use Method 2: setRetainInstance(true);   // Method 1: fileURI = NULL issue
     }
 
     @Override
@@ -66,10 +70,29 @@ public class RacketFragmentImagesTab extends Fragment {
             public void onClick(View v) {
                 //Log.d(TAG, "onClick(): mRacketImagesButton");
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Check if there is a rear facing camera.
+                Context context = getActivity();
+                PackageManager packageManager = context.getPackageManager();
+                if(packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA) == false){
+                    Toast.makeText(getActivity(), "This device does not have a camera.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                // Check if temporary media file is available
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+                if (fileUri == null) {
+                    Toast.makeText(getActivity(), "Error creating media file.  Check external storage on device.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Start camera intent
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+                //Log.d(TAG, "onClick(): mRacketImagesButton: fileUri: " + fileUri);
+                //Toast.makeText(getActivity(), "onClick(): mRacketImagesButton: fileUri: " + fileUri,
+                //        Toast.LENGTH_LONG).show();
 
                 // start the image capture Intent
                 startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -117,9 +140,18 @@ public class RacketFragmentImagesTab extends Fragment {
         // Check which request we're responding to
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
+                Uri photoUri;
 
                 if (data == null) {
                     // A known bug here! The image should have saved in fileUri
+                    Log.d(TAG, "onActivityResult(): fileUri: " + fileUri);
+
+                    if (fileUri == null) {   // this should not occur
+                        Toast.makeText(getActivity(), "Image capture error!",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     photoUri = fileUri;
 
                     //Toast.makeText(getActivity(), "BUG: Image saved successfully in: " + photoUri,
@@ -143,6 +175,8 @@ public class RacketFragmentImagesTab extends Fragment {
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // User cancelled the image capture
                 //Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Cancelled: " + fileUri,
+                        Toast.LENGTH_LONG).show();
             } else {
                 // Image capture failed, advise user
                 Toast.makeText(getActivity(), "Image capture failed!",
@@ -269,7 +303,12 @@ public class RacketFragmentImagesTab extends Fragment {
 
     /** Create a file Uri for saving an image or video */
     private Uri getOutputMediaFileUri(int type){
-        return Uri.fromFile(getOutputMediaFile(type));
+        File mediaFile = getOutputMediaFile(type);
+
+        if (mediaFile == null)
+            return null;
+        else
+            return Uri.fromFile(mediaFile);
     }
 
     /** Create a File for saving an image or video */
@@ -306,5 +345,25 @@ public class RacketFragmentImagesTab extends Fragment {
         }
 
         return mediaFile;
+    }
+
+
+    // Method 2: fileURI = NULL issue
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (fileUri != null) {
+            outState.putString(FILE_URI_KEY, fileUri.toString());
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(FILE_URI_KEY)) {
+                fileUri = Uri.parse(savedInstanceState.getString(FILE_URI_KEY));
+            }
+        }
     }
 }

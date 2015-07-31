@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.media.ExifInterface;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.plew.android.simpleracketdb.ImageData;
 import com.plew.android.simpleracketdb.R;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -86,11 +89,14 @@ public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
             // delete???:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
             // delete???: }
 
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            // 1st try: holder.imageView.setImageBitmap(bitmap);    // gap issue
-            // 2nd try: holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));    // 120x120
+            // Peter: original: Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            Bitmap bitmap = rotateBitmapOrientation(imageFile.getAbsolutePath());   // rotate bitmap
 
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            // 1st try: holder.imageView.setImageBitmap(bitmap);    // gap issue
+            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 80, 80, false));    // 2nd try:  120x120
+
+            // 3rd try: scaled landscape/portrait
+            /* WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -99,7 +105,7 @@ public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
             int scaleToUse = 20; // this will be our percentage
             int sizeY = height * scaleToUse / 100;
             int sizeX = bitmap.getWidth() * sizeY / bitmap.getHeight();
-            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, sizeX, sizeY, false));
+            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, sizeX, sizeY, false));  */
 
             // this works too: BitmapDrawable drawable = new BitmapDrawable(context.getResources(), bitmap);
             // this works too: holder.imageView.setImageDrawable(drawable);
@@ -112,5 +118,36 @@ public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
 
         // Return the completed view to render on screen
         return view;
+    }
+
+    // https://guides.codepath.com/android/Accessing-the-Camera-and-Stored-Media#overview
+    private Bitmap rotateBitmapOrientation(String photoFilePath) {
+        // Create and configure BitmapFactory
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath, bounds);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+
+        ExifInterface exif;
+        try {
+            // Read EXIF Data
+            exif = new ExifInterface(photoFilePath);
+        } catch (IOException e) {
+            return bm;
+        }
+
+        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+        int rotationAngle = 0;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+        // Rotate Bitmap
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+        // Return result
+        return rotatedBitmap;
     }
 }

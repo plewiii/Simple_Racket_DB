@@ -16,9 +16,9 @@
     <ImageView
         android:id="@+id/racket_image"
         android:contentDescription="Racket Image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitStart"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center_horizontal"/>
 
