@@ -235,7 +235,7 @@ public class RacketListFragment extends Fragment {
         alertDialog.setTitle("Confirm Export ...");
 
         // Setting Dialog Message
-        alertDialog.setMessage("rackets.json will be written to the Download folder.");
+        alertDialog.setMessage("rackets.json will be written to the external storage device.");
 
         // Setting Icon to Dialog
         //alertDialog.setIcon(R.drawable.delete);
@@ -252,10 +252,10 @@ public class RacketListFragment extends Fragment {
                     // Create an intent to send the file
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
-                    File mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) +
+                    File mFile = new File(getActivity().getExternalFilesDir("") +
                             File.separator + RacketList.FILENAME);   // this needs to match external file name in exportRacketsJSON()
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mFile));
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "SimpleRacketDB:" + RacketList.FILENAME);
+                    intent.putExtra(Intent.EXTRA_SUBJECT, RacketList.FILENAME);
                     intent = Intent.createChooser(intent, "Send " + RacketList.FILENAME);  // Chapter 21, page 353
                     startActivity(intent);
                 }
@@ -332,7 +332,7 @@ public class RacketListFragment extends Fragment {
         // Setting Dialog Message
         alertDialog.setMessage(
                 "CREATE\n" +
-                "1. Racket:\n" + "Racket List page. Press Add Racket\n" +
+                "1. Racket:\n" + "Simple Racket DB page. Press Add Racket\n" +
                 "2. String:\n" + "STRINGS tab. Press Add String\n" +
                 "3. Image:\n" + "IMAGES tab. Press Add Image\n" +
                 "\n" +

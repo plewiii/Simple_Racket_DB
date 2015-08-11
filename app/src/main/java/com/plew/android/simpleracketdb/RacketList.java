@@ -102,8 +102,9 @@ public class RacketList {
             // Peter: Android folder: File mediaStorageDir = mAppContext.getExternalFilesDir("");
             // Peter: Android folder: String externalFilename = mediaStorageDir.getPath() + File.separator + FILENAME;
 
-            // Download folder
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            // Peter: Download folder: File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+            File path = mAppContext.getExternalFilesDir("");  // /mnt/sdcard/Android/data/com.plew.android.simpleracketdb/files
             String externalFilename = path + File.separator + FILENAME;
             mSerializer.exportRacketsJSON(mRackets, externalFilename);
             Log.d(TAG, "exportRacketsJSON()");

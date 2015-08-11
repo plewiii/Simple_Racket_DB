@@ -318,7 +318,7 @@ public class RacketFragmentImagesTab extends Fragment {
 
         // Peter: delete: File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
         // Peter: delete:         Environment.DIRECTORY_PICTURES), getActivity().getPackageName());
-        File mediaStorageDir = getActivity().getExternalFilesDir("");
+        File mediaStorageDir = getActivity().getExternalFilesDir("");  // /mnt/sdcard/Android/data/com.plew.android.simpleracketdb/files
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
