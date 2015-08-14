@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,31 +85,13 @@ public class ImageDataArrayAdapter extends ArrayAdapter<ImageData> {
             //Toast.makeText(context, "imageFile.exists():" + position + " : " + objects.get(position).getUri(),
             //        Toast.LENGTH_SHORT).show();
 
-            // delete???: Drawable oldDrawable = holder.imageView.getDrawable();
-            // delete???: if (oldDrawable != null) {
-            // delete???:     ((BitmapDrawable)oldDrawable).getBitmap().recycle();
-            // delete???: }
-
+            // Peter: based off Camera2
             // Peter: original: Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            Bitmap bitmap = rotateBitmapOrientation(imageFile.getAbsolutePath());   // rotate bitmap
+            Bitmap bitmap = rotateBitmapOrientation(imageFile.getAbsolutePath());   // rotate bitmap - correct Samsung Galaxy 4
 
-            // 1st try: holder.imageView.setImageBitmap(bitmap);    // gap issue
-            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 80, 80, false));    // 2nd try:  120x120
-
-            // 3rd try: scaled landscape/portrait
-            /* WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int width = size.x;
-            int height = size.y;
-            int scaleToUse = 20; // this will be our percentage
-            int sizeY = height * scaleToUse / 100;
-            int sizeX = bitmap.getWidth() * sizeY / bitmap.getHeight();
-            holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, sizeX, sizeY, false));  */
-
-            // this works too: BitmapDrawable drawable = new BitmapDrawable(context.getResources(), bitmap);
-            // this works too: holder.imageView.setImageDrawable(drawable);
+            // 1st try: holder.imageView.setImageBitmap(bitmap);    // 1st try: gap issue
+            // 2nd try:  holder.imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 80, 80, false));    // 2nd try: distorted but acceptable
+            holder.imageView.setImageBitmap(ThumbnailUtils.extractThumbnail(bitmap, 80, 80, ThumbnailUtils.OPTIONS_RECYCLE_INPUT));  // 3rd try: thumbnail utility
         }
         else {
             //Toast.makeText(context, "imageFile NOT exists():" + objects.get(position).getUri(),
