@@ -482,7 +482,8 @@ public class Racket {
     }
 
     public void addStrngData(StrngData c) {
-        mStrngDatas.add(c);
+        // Original: add to end: mStrngDatas.add(c);
+        mStrngDatas.add(0, c);  // Add to beginning
         // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
     }
 
@@ -525,7 +526,8 @@ public class Racket {
     }
 
     public void addImageData(ImageData c) {
-        mImageDatas.add(c);
+        // Original: add to end: mImageDatas.add(c);
+        mImageDatas.add(0, c);  // Add to beginning
         // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
     }
 

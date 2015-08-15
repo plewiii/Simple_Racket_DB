@@ -64,7 +64,8 @@ public class RacketList {
     }
 
     public void addRacket(Racket c) {
-        mRackets.add(c);
+        // Original: add to end: mRackets.add(c);
+        mRackets.add(0, c);  // Add to beginning
         saveRackets();
     }
 
