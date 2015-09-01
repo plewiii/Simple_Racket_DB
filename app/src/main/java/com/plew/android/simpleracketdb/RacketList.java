@@ -117,11 +117,11 @@ public class RacketList {
         }
     }
 
-    public boolean importRacketsJSON() {
+    public boolean importRacketsJSON(String externalFilename) {
         try {
-            // racket.json is expected to be located in Download folder
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            String externalFilename = path + File.separator + FILENAME;
+            // Orig: racket.json is expected to be located in Download folder
+            // Orig: File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            // Orig: String externalFilename = path + File.separator + FILENAME;
 
             ArrayList<Racket> rackets = mSerializer.importRacketsJSON(externalFilename);
             // Replace racket list if valid data is imported

@@ -25,8 +25,6 @@ public class RacketFragment extends Fragment {
 
     public static final String EXTRA_RACKET_ID = "racket.RACKET_ID";
 
-    Racket mRacket;
-
     ViewPager pager;
     RacketViewPagerAdapter adapter;
     SlidingTabLayout tabs;
@@ -58,12 +56,11 @@ public class RacketFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // chapter 10: delete: mRacket = new Racket();
-        UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
+        //UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
         // chapter 10: flexible method: UUID racketId = (UUID)getArguments().getSerializable(EXTRA_RACKET_ID);  // chapter 10: flexible method:
-        mRacket = RacketList.get(getActivity()).getRacket(racketId);
 
         // Action Bar - Title, Background
-        getActivity().setTitle(mRacket.getName());    // "Racket Data"
+        updateActionBar();
 
         setHasOptionsMenu(true);
     }
@@ -135,5 +132,11 @@ public class RacketFragment extends Fragment {
         //Log.d(TAG, "onPause()");
         super.onPause();
         RacketList.get(getActivity()).saveRackets();
+    }
+
+    private void updateActionBar() {
+        UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(EXTRA_RACKET_ID);  // chapter 10: direct method:
+        Racket mRacket = RacketList.get(getActivity()).getRacket(racketId);  // mRacket is local
+        getActivity().setTitle(mRacket.toString());    // "Racket Data"
     }
 }

@@ -27,6 +27,9 @@
             <EditText
                 android:id="@+id/editText_RacketName"
                 android:text="TBD"
+                android:inputType="text"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"

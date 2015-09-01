@@ -3,18 +3,11 @@ package com.plew.android.simpleracketdb;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,23 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.plew.android.common.tabview.RacketArrayAdapter;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class RacketListFragment extends Fragment {
 
@@ -284,7 +269,7 @@ public class RacketListFragment extends Fragment {
         alertDialog.setTitle("Confirm Import ...");
 
         // Setting Dialog Message
-        alertDialog.setMessage("rackets.json must be located in the Download folder.\n\n" +
+        alertDialog.setMessage("rackets.json should be transferred to the Download folder.\n\n" +
                 "Warning: racket data and images will be deleted!!!!");
 
         // Setting Icon to Dialog
@@ -295,7 +280,8 @@ public class RacketListFragment extends Fragment {
             public void onClick(DialogInterface dialog,int which) {
                 // Yes button clicked
 
-                boolean import_flag = RacketList.get(getActivity()).importRacketsJSON();
+                // This version assumes racket.json is in DOWNLOAD directory
+                /* boolean import_flag = RacketList.get(getActivity()).importRacketsJSON();
                 if (import_flag) {
                     Toast.makeText(getActivity(), "Import success", Toast.LENGTH_SHORT).show();
                     mRackets = RacketList.get(getActivity()).getRackets();
@@ -306,7 +292,30 @@ public class RacketListFragment extends Fragment {
                     mRacketListView.setAdapter(racket_adapter);
                 }
                 else
-                    Toast.makeText(getActivity(), "Import failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Import failed", Toast.LENGTH_SHORT).show(); */
+
+                // This version pops a dialog which allows the user to select the racket.json file.  Start at DOWNLOAD directory.
+                FilePickerDialog filePickerDialog = new FilePickerDialog(getActivity());
+                filePickerDialog.setFileListener(new FilePickerDialog.FileSelectedListener() {
+                    @Override public void fileSelected(final File file) {
+                        boolean import_flag = RacketList.get(getActivity()).importRacketsJSON(file.toString());
+                        if (import_flag) {
+                            Toast.makeText(getActivity(), "Import success", Toast.LENGTH_SHORT).show();
+                            mRackets = RacketList.get(getActivity()).getRackets();
+                            // this call did not work: racket_adapter.notifyDataSetChanged();
+                            // Peter: delete: racket_adapter = new ArrayAdapter<Racket>(getActivity(), R.layout.list_racket_item, R.id.racket_item_text, mRackets);
+                            racket_adapter = new RacketArrayAdapter(getActivity(), R.layout.list_racket_item, R.id.racket_item_text,
+                                    R.id.racket_item_image, R.id.racket_item_text2, R.id.racket_item_text3, mRackets);
+                            mRacketListView.setAdapter(racket_adapter);
+                        }
+                        else
+                            Toast.makeText(getActivity(), "Import failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                filePickerDialog.setExtension("json");
+                filePickerDialog.setStartPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                filePickerDialog.setPermTitle("Choose JSON file to import:");
+                filePickerDialog.showDialog();
             }
         });
 

@@ -1,30 +1,23 @@
 package com.plew.android.common.tabview;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.plew.android.simpleracketdb.StrngData;
 import com.plew.android.simpleracketdb.R;
 import com.plew.android.simpleracketdb.UsageData;
 
-import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
  * Created by Tim on 5/14/2015.
  */
-public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
+public class UsageDataArrayAdapter extends ArrayAdapter<UsageData> {
 
     private final Activity context;
     private final int resource;
@@ -32,7 +25,9 @@ public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
     private final int imageViewResourceId;
     private final int textView2ResourceId;
     private final int textView3ResourceId;
-    private final ArrayList<StrngData> objects;
+    private final ArrayList<UsageData> objects;
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
 
     // View lookup cache
     private static class ViewHolder {
@@ -42,9 +37,9 @@ public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
         TextView txtView3;
     }
 
-    public StrngDataArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
+    public UsageDataArrayAdapter(Activity context, int resource, int textViewResourceId, int imageViewResourceId,
                                  int textView2ResourceId, int textView3ResourceId,
-                                 ArrayList<StrngData> objects) {
+                                 ArrayList<UsageData> objects) {
         super(context, 0, objects);  // super(context, resource, textViewResourceId, objects);
         this.context = context;
         this.resource = resource;
@@ -85,18 +80,11 @@ public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
         holder.txtView.setText(objects.get(position).toString());
 
         // Image
-        holder.imageView.setImageResource(R.mipmap.mystring);
+        holder.imageView.setImageResource(R.mipmap.myracket);
 
         // Text2 and Text 3
-        holder.txtView2.setText("Mains/Crosses: " + objects.get(position).getMainTension()
-                + "/" + objects.get(position).getCrossTension());
-
-        ArrayList<UsageData> mUsageDatas = objects.get(position).getUsageDatas();
-        double total_hours = 0.0;
-        for (UsageData c : mUsageDatas) {
-            total_hours = total_hours + c.getHours();
-        }
-        holder.txtView3.setText("Hours Played: " + String.valueOf(total_hours));
+        holder.txtView2.setText("Hours Played:");
+        holder.txtView3.setText(String.valueOf(objects.get(position).getHours()));
 
         // Return the completed view to render on screen
         return view;

@@ -40,6 +40,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RacketActivity" />
         </activity>
+        <activity
+            android:name=".UsageDataActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".StrngDataActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTop" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StrngDataActivity" />
+        </activity>
     </application>
 
 </manifest>
