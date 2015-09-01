@@ -7,15 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,11 +69,6 @@ public class RacketFragmentDataTab extends Fragment {
         // does not work: getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    public void updateDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
-        mRacketPurchaseDateButton.setText(sdf.format(mRacket.getDate()));
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Log.d(TAG, "onCreateView(): ");
@@ -93,6 +91,20 @@ public class RacketFragmentDataTab extends Fragment {
 
             public void afterTextChanged(Editable c) {
                 // this one too
+            }
+        });
+        mRacketNameEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String text = v.getText().toString();
+                    mRacket.setName(text);
+
+                    updateActionBar();
+
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -228,5 +240,14 @@ public class RacketFragmentDataTab extends Fragment {
         //mRacketDataTabScrollView.fullScroll(View.FOCUS_UP);
         //mRacketDataTabScrollView.pageScroll(View.FOCUS_UP);
         mRacketDataTabScrollView.smoothScrollTo(0,0);
+    }
+
+    private void updateDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        mRacketPurchaseDateButton.setText(sdf.format(mRacket.getDate()));
+    }
+
+    private void updateActionBar() {
+        getActivity().setTitle(mRacket.toString());    // "Racket Data"
     }
 }

@@ -2,10 +2,12 @@ package com.plew.android.simpleracketdb;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,6 +40,8 @@ public class StrngData {
     // Future development: private static final String JSON_STRNG_TEST1 = "string_test1";  // Placeholder for future development
     // Future development: private static final String JSON_STRNG_TEST2 = "string_test2";
 
+    private static final String JSON_STRING_USAGEDATA = "string_usagedata";
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
 
     private UUID mId;
@@ -62,6 +66,8 @@ public class StrngData {
 
     // Future development: private Integer mTest1;  // Placeholder for future development
     // Future development: private Integer mTest2;
+
+    private ArrayList<UsageData> mUsageDatas;
 
     public StrngData() {
         mId = UUID.randomUUID();
@@ -88,6 +94,8 @@ public class StrngData {
 
         // Future development: mTest1 = 3333;   // Placeholder for future development
         // Future development: mTest2 = 4444;
+
+        mUsageDatas = new ArrayList<UsageData>();
     }
 
     public StrngData(JSONObject json, int jsonVersion) throws JSONException {
@@ -124,6 +132,15 @@ public class StrngData {
         // Future development:     mTest1 = 103;  // set to bogus value
         // Future development:     mTest2 = 104;
         // Future development: }
+
+        JSONArray jsonUsageDataArray = json.getJSONArray(JSON_STRING_USAGEDATA);
+        mUsageDatas = new ArrayList<UsageData>();
+        for (int i = 0; i < jsonUsageDataArray.length(); i++) {
+            JSONObject jsonUsageDataObj = jsonUsageDataArray.getJSONObject(i);
+            UsageData c = new UsageData(jsonUsageDataObj, jsonVersion);
+            mUsageDatas.add(c);
+        }
+        //Log.d(TAG, "Racket(JSONObject json, int jsonVersion): mStrngDatas.size():" + mStrngDatas.size());
     }
 
     public JSONObject toJSON(int jsonVersion) throws JSONException {
@@ -158,6 +175,14 @@ public class StrngData {
         // Future development:     json.put(JSON_STRNG_TEST1, mTest1);
         // Future development:     json.put(JSON_STRNG_TEST2, mTest2);
         // Future development: }
+
+        // Add Usage - need json array to hold the list
+        JSONArray jsonUsageDataArray = new JSONArray();
+        for (UsageData c : mUsageDatas) {
+            JSONObject jsonUsageDataObj = c.toJSON(jsonVersion);
+            jsonUsageDataArray.put(jsonUsageDataObj);
+        }
+        json.put(JSON_STRING_USAGEDATA, jsonUsageDataArray);
 
         return json;
     }
@@ -289,4 +314,27 @@ public class StrngData {
     }
 
     public void setComments(String comments) { mComments = comments; }
+
+    public UsageData getUsageData(UUID id) {
+        for (UsageData c : mUsageDatas) {
+            if (c.getId().equals(id))
+                return c;
+        }
+        return null;
+    }
+
+    public void addUsageData(UsageData c) {
+        // Original: add to end: mUsageDatas.add(c);
+        mUsageDatas.add(0, c);  // Add to beginning
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
+    }
+
+    public void deleteUsageData(UsageData c) {
+        mUsageDatas.remove(c);
+        // kluge: moved to RacketFragment: RacketList.get(getActivity()).saveRackets();
+    }
+
+    public ArrayList<UsageData> getUsageDatas() {
+        return mUsageDatas;
+    }
 }

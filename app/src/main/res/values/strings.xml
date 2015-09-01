@@ -8,4 +8,6 @@
     <string name="edit_string">Edit String</string>
     <string name="delete_image">Delete Image</string>
     <string name="edit_image">Edit Image</string>
+    <string name="delete_usage">Delete Usage</string>
+    <string name="edit_usage">Edit Usage</string>
 </resources>
