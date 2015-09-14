@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +26,10 @@ import android.widget.Toast;
 import com.plew.android.common.tabview.ImageDataArrayAdapter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,7 +120,7 @@ public class RacketFragmentImagesTab extends Fragment {
 
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(c.getUri(), "image/*");
+                intent.setDataAndType(c.getImgUri(), "image/*");
                 startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -163,10 +172,42 @@ public class RacketFragmentImagesTab extends Fragment {
                 }
 
                 ImageData imagedata = new ImageData();
-                imagedata.setUri(photoUri);
+                imagedata.setImgUri(photoUri);
 
+                // Create thumbnail of original image
+                String thumbPath = photoUri.getPath();  // photoUri contains the name of the IMG file
+                thumbPath = thumbPath.replace("IMG", "THUMB");  // change IMG to THUMB
+                Uri thumbUri = Uri.parse(thumbPath);
+                imagedata.setThumbUri(thumbUri);  // Set thumb uri.  Should be no issues even if thumb is not created.
+
+                File imageFile = new File(photoUri.getPath());
+                if (imageFile.exists()){
+                    // Peter: original: Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                    Bitmap bitmap = rotateBitmapOrientation(imageFile.getAbsolutePath());   // rotate bitmap - correct Samsung Galaxy 4
+                    Bitmap thumb_bitmap = ThumbnailUtils.extractThumbnail(bitmap, 80, 80, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+
+                    OutputStream fOutputStream = null;
+                    File thumbFile = new File(thumbPath);
+                    try {
+                        fOutputStream = new FileOutputStream(thumbFile);
+                        thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutputStream);
+                        fOutputStream.flush();
+                        fOutputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "Save Thumb Failed", Toast.LENGTH_SHORT).show();
+                        return;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "Save Thumb Failed", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                // Add imagedata to racket and save
                 mRacket.addImageData(imagedata);
                 RacketList.get(getActivity()).saveRackets();   // kluge: could not be done in addImageData
+
                 // Peter: crashes: imagedata_adapter.notifyDataSetChanged();
                 imagedata_adapter = new ImageDataArrayAdapter(getActivity(), R.layout.list_racketimage_item,
                         R.id.racket_image_name, R.id.racket_image, mImageDatas);
@@ -267,9 +308,10 @@ public class RacketFragmentImagesTab extends Fragment {
             public void onClick(DialogInterface dialog,int which) {
                 // Yes button clicked
 
-                // Delete photo
+                // Delete photo - IMG and THUMB
                 UUID racketId = (UUID)getActivity().getIntent().getSerializableExtra(RacketFragment.EXTRA_RACKET_ID);  // chapter 10: direct method:
-                boolean flag = RacketList.get(getActivity()).getRacket(racketId).deletePhoto(imagedata.getUri());
+                boolean flag = RacketList.get(getActivity()).getRacket(racketId).deletePhoto(imagedata.getImgUri());
+                flag = RacketList.get(getActivity()).getRacket(racketId).deletePhoto(imagedata.getThumbUri());
                 //if (flag) {
                 //    Toast.makeText(getActivity(), "Deleting Image...:" + imagedata.toString(),
                 //            Toast.LENGTH_LONG).show();
@@ -365,5 +407,36 @@ public class RacketFragmentImagesTab extends Fragment {
                 fileUri = Uri.parse(savedInstanceState.getString(FILE_URI_KEY));
             }
         }
+    }
+
+    // https://guides.codepath.com/android/Accessing-the-Camera-and-Stored-Media#overview
+    private Bitmap rotateBitmapOrientation(String photoFilePath) {
+        // Create and configure BitmapFactory
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoFilePath, bounds);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
+
+        ExifInterface exif;
+        try {
+            // Read EXIF Data
+            exif = new ExifInterface(photoFilePath);
+        } catch (IOException e) {
+            return bm;
+        }
+
+        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
+        int rotationAngle = 0;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
+        // Rotate Bitmap
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
+        // Return result
+        return rotatedBitmap;
     }
 }

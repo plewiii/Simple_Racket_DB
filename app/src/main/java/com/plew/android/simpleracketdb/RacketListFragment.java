@@ -342,17 +342,19 @@ public class RacketListFragment extends Fragment {
         alertDialog.setMessage(
                 "CREATE\n" +
                 "1. Racket:\n" + "Simple Racket DB page. Press Add Racket\n" +
-                "2. String:\n" + "STRINGS tab. Press Add String\n" +
-                "3. Image:\n" + "IMAGES tab. Press Add Image\n" +
+                "2. Image:\n" + "Racket page. IMAGES tab. Press Add Image\n" +
+                "3. String:\n" + "Racket page. STRINGS tab. Press Add String\n" +
+                "4. Usage:\n" + "String page. USAGE tab. Press Add Usage\n" +
                 "\n" +
                 "DELETE\n" +
-                "1. Image:\n" + "IMAGES tab. Long press on single image\n" +
-                "2. String:\n" + "STRINGS tab. Long press on single string\n" +
-                "3. Racket:\n" + "Racket List page. Long press on single racket\n" +
+                "1. Usage:\n" + "String page. USAGE tab. Long press on single usage\n" +
+                "2. String:\n" + "Racket page. STRINGS tab. Long press on single string\n" +
+                "3. Image:\n" + "Racket page. IMAGES tab. Long press on single image\n" +
+                "3. Racket:\n" + "Simple Racket DB page. Long press on single racket\n" +
                 "\n" +
-                "ADVANCE: Transfer database between devices\n" +
-                "1. Export JSON:\n" + "Racket List page. Options menu. Press Export JSON\n" +
-                "2. Import JSON:\n" + "Racket List page. Options menu. Press Import JSON\n"
+                "ADVANCE: Backup-Transfer database\n" +
+                "1. Export JSON:\n" + "Simple Racket DB page. Options menu. Press Export JSON\n" +
+                "2. Import JSON:\n" + "Simple Racket DB page. Options menu. Press Import JSON\n"
         );
 
 

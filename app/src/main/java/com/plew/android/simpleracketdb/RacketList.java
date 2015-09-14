@@ -78,7 +78,8 @@ public class RacketList {
         // Peter: not sure if this operation should be done here or if there is a more efficient way
         ArrayList<ImageData> mImageDatas = c.getImageDatas();
         for (ImageData imagedata : mImageDatas) {
-            c.deletePhoto(imagedata.getUri());
+            c.deletePhoto(imagedata.getImgUri());
+            c.deletePhoto(imagedata.getThumbUri());
         }
 
         mRackets.remove(c);
@@ -131,7 +132,8 @@ public class RacketList {
                     // Peter: not sure if this operation should be done here or if there is a more efficient way
                     ArrayList<ImageData> mImageDatas = c.getImageDatas();
                     for (ImageData imagedata : mImageDatas) {
-                        c.deletePhoto(imagedata.getUri());
+                        c.deletePhoto(imagedata.getImgUri());
+                        c.deletePhoto(imagedata.getThumbUri());
                     }
                 }
 

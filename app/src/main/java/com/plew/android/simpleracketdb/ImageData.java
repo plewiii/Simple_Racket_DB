@@ -19,7 +19,9 @@ public class ImageData {
     private static final String JSON_IMAGE_ID = "image_id";
     private static final String JSON_IMAGE_DATE = "image_date";
 
-    private static final String JSON_IMAGE_URI = "image_uri";
+    private static final String JSON_IMAGE_NAME = "image_name";
+    private static final String JSON_IMAGE_IMG_URI = "image_img_uri";
+    private static final String JSON_IMAGE_THUMB_URI = "image_thumb_uri";
 
     // Future development: private static final String JSON_IMAGE_TEST1 = "image_test1";  // Placeholder for future development
     // Future development: private static final String JSON_IMAGE_TEST2 = "image_test2";
@@ -29,7 +31,9 @@ public class ImageData {
     private UUID mId;
     private Date mDate;
 
-    private Uri mUri;
+    private String mName;
+    private Uri mImgUri;
+    private Uri mThumbUri;
 
     // Future development: private Integer mTest1;  // Placeholder for future development
     // Future development: private Integer mTest2;
@@ -39,7 +43,9 @@ public class ImageData {
         mDate = new Date();
         //Log.d(TAG, "ImageData(): " + mDate);
 
-        mUri = Uri.EMPTY;
+        mName = "My Image";
+        mImgUri = Uri.EMPTY;
+        mThumbUri = Uri.EMPTY;
 
         // Future development: mTest1 = 5555;   // Placeholder for future development
         // Future development: mTest2 = 6666;
@@ -50,7 +56,9 @@ public class ImageData {
         mId = UUID.fromString(json.getString(JSON_IMAGE_ID));
         mDate = new Date(json.getLong(JSON_IMAGE_DATE));
 
-        mUri = Uri.parse(json.getString(JSON_IMAGE_URI));
+        mName = json.getString(JSON_IMAGE_NAME);
+        mImgUri = Uri.parse(json.getString(JSON_IMAGE_IMG_URI));
+        mThumbUri = Uri.parse(json.getString(JSON_IMAGE_THUMB_URI));
 
         // Version test - Placeholder for future development
         // Future development: Log.d(TAG, "ImageData(JSONObject json, int jsonVersion): jsonVersion:" + jsonVersion);
@@ -73,7 +81,9 @@ public class ImageData {
         json.put(JSON_IMAGE_ID, mId.toString());
         json.put(JSON_IMAGE_DATE, mDate.getTime());
 
-        json.put(JSON_IMAGE_URI, mUri);
+        json.put(JSON_IMAGE_NAME, mName);
+        json.put(JSON_IMAGE_IMG_URI, mImgUri);
+        json.put(JSON_IMAGE_THUMB_URI, mThumbUri);
 
         // Version test  - Placeholder for future development
         // Future development: Log.d(TAG, "toJSON(int jsonVersion): jsonVersion:" + jsonVersion);
@@ -89,7 +99,7 @@ public class ImageData {
 
     @Override
     public String toString() {
-        return getUri().getLastPathSegment();
+        return getImgUri().getLastPathSegment();
     }
 
     public UUID getId() {
@@ -105,14 +115,34 @@ public class ImageData {
         mDate = date;
     }
 
-    public Uri getUri() {
-        //Log.d(TAG, "getUri(): " + mUri);
-        return mUri;
+    public String getName() {
+        //Log.d(TAG, "getName(): " + mName);
+        return mName;
     }
 
-    public void setUri(Uri uri) {
-        mUri = uri;
-        //Log.d(TAG, "setUri(): " + mUri);
+    public void setName(String name) {
+        mName = name;
+        //Log.d(TAG, "setName(): " + mName);
+    }
+
+    public Uri getImgUri() {
+        //Log.d(TAG, "getImgUri(): " + mImgUri);
+        return mImgUri;
+    }
+
+    public void setImgUri(Uri uri) {
+        mImgUri = uri;
+        //Log.d(TAG, "setImgUri(): " + mImgUri);
+    }
+
+    public Uri getThumbUri() {
+        //Log.d(TAG, "getThumbUri(): " + mThumbUri);
+        return mThumbUri;
+    }
+
+    public void setThumbUri(Uri uri) {
+        mThumbUri = uri;
+        //Log.d(TAG, "setThumbUri(): " + mThumbUri);
     }
 
 }

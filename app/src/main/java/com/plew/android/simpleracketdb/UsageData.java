@@ -16,6 +16,7 @@ public class UsageData {
     private static final String JSON_USAGE_ID = "usage_id";
     private static final String JSON_USAGE_DATE = "usage_date";
 
+    private static final String JSON_USAGE_NAME = "usage_name";
     private static final String JSON_USAGE_HOURS = "usage_hours";
 
     private static final String JSON_USAGE_COMMENTS = "usage_comments";
@@ -28,6 +29,7 @@ public class UsageData {
     private UUID mId;
     private Date mDate;
 
+    private String mName;
     private double mHours;
 
     private String mComments;
@@ -40,6 +42,7 @@ public class UsageData {
         mDate = new Date();
         //Log.d(TAG, "StrngData(): " + mDate);
 
+        mName = "My Usage";
         mHours = 1.25d;
 
         mComments = "None";
@@ -53,6 +56,7 @@ public class UsageData {
         mId = UUID.fromString(json.getString(JSON_USAGE_ID));
         mDate = new Date(json.getLong(JSON_USAGE_DATE));
 
+        mName = json.getString(JSON_USAGE_NAME);
         mHours = json.getDouble(JSON_USAGE_HOURS);
 
         mComments = json.getString(JSON_USAGE_COMMENTS);
@@ -78,6 +82,7 @@ public class UsageData {
         json.put(JSON_USAGE_ID, mId.toString());
         json.put(JSON_USAGE_DATE, mDate.getTime());
 
+        json.put(JSON_USAGE_NAME, mName);
         json.put(JSON_USAGE_HOURS, mHours);
 
         json.put(JSON_USAGE_COMMENTS, mComments);
@@ -110,6 +115,16 @@ public class UsageData {
 
     public void setDate(Date date) {
         mDate = date;
+    }
+
+    public String getName() {
+        //Log.d(TAG, "getName(): " + mName);
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
+        //Log.d(TAG, "setName(): " + mName);
     }
 
     public double getHours() {
