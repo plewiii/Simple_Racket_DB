@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.plew.android.common.tabview.UsageDataArrayAdapter;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -217,7 +218,8 @@ public class StrngDataFragmentUsageTab extends Fragment {
         for (UsageData c : mUsageDatas) {
             total_hours = total_hours + c.getHours();
         }
-        mTotalHoursPlayedTextView.setText(String.valueOf(total_hours));
+        DecimalFormat df = new DecimalFormat("0.0");
+        mTotalHoursPlayedTextView.setText(df.format(total_hours));   // String.valueOf(total_hours)
     }
 
 }

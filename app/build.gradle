@@ -8,8 +8,8 @@ android {
         applicationId "com.plew.android.simpleracketdb"
         minSdkVersion 8
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.00"
     }
     buildTypes {
         release {

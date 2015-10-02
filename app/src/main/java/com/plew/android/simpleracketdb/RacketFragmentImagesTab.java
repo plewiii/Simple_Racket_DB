@@ -153,7 +153,7 @@ public class RacketFragmentImagesTab extends Fragment {
 
                 if (data == null) {
                     // A known bug here! The image should have saved in fileUri
-                    Log.d(TAG, "onActivityResult(): fileUri: " + fileUri);
+                    //Log.d(TAG, "onActivityResult(): fileUri: " + fileUri);
 
                     if (fileUri == null) {   // this should not occur
                         Toast.makeText(getActivity(), "Image capture error!",
@@ -216,7 +216,9 @@ public class RacketFragmentImagesTab extends Fragment {
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // User cancelled the image capture
                 //Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "Cancelled: " + fileUri,
+                //Toast.makeText(getActivity(), "Cancelled: " + fileUri,
+                //        Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Image capture canceled!",
                         Toast.LENGTH_LONG).show();
             } else {
                 // Image capture failed, advise user

@@ -43,7 +43,7 @@ public class UsageData {
         //Log.d(TAG, "StrngData(): " + mDate);
 
         mName = "My Usage";
-        mHours = 1.25d;
+        mHours = 1.2d;
 
         mComments = "None";
 

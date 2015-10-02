@@ -3,6 +3,9 @@ package com.plew.android.simpleracketdb;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -340,21 +343,26 @@ public class RacketListFragment extends Fragment {
 
         // Setting Dialog Message
         alertDialog.setMessage(
+                "About:\n" +
+                "Simple Racket DB is an easy to use app that maintains a record of your racket, re-stringing and usage." +
+                "The app also has the ability to backup the data to external storage.\n" +
+                "\n" +
+                "Quick Tutorial:\n" +
                 "CREATE\n" +
-                "1. Racket:\n" + "Simple Racket DB page. Press Add Racket\n" +
-                "2. Image:\n" + "Racket page. IMAGES tab. Press Add Image\n" +
-                "3. String:\n" + "Racket page. STRINGS tab. Press Add String\n" +
-                "4. Usage:\n" + "String page. USAGE tab. Press Add Usage\n" +
+                "1. Racket:\n" + "Simple Racket DB page. Press Add Racket.\n" +
+                "2. Image:\n" + "Racket page. IMAGES tab. Press Add Image.\n" +
+                "3. String:\n" + "Racket page. STRINGS tab. Press Add String.\n" +
+                "4. Usage:\n" + "String page. USAGE tab. Press Add Usage.\n" +
                 "\n" +
                 "DELETE\n" +
-                "1. Usage:\n" + "String page. USAGE tab. Long press on single usage\n" +
-                "2. String:\n" + "Racket page. STRINGS tab. Long press on single string\n" +
-                "3. Image:\n" + "Racket page. IMAGES tab. Long press on single image\n" +
-                "3. Racket:\n" + "Simple Racket DB page. Long press on single racket\n" +
+                "1. Usage:\n" + "String page. USAGE tab. Long press on single usage.\n" +
+                "2. String:\n" + "Racket page. STRINGS tab. Long press on single string.\n" +
+                "3. Image:\n" + "Racket page. IMAGES tab. Long press on single image.\n" +
+                "3. Racket:\n" + "Simple Racket DB page. Long press on single racket.\n" +
                 "\n" +
                 "ADVANCE: Backup-Transfer database\n" +
-                "1. Export JSON:\n" + "Simple Racket DB page. Options menu. Press Export JSON\n" +
-                "2. Import JSON:\n" + "Simple Racket DB page. Options menu. Press Import JSON\n"
+                "1. Export JSON:\n" + "Simple Racket DB page. Options menu. Press Export JSON.\n" +
+                "2. Import JSON:\n" + "Simple Racket DB page. Options menu. Press Import JSON.\n"
         );
 
 
@@ -381,8 +389,15 @@ public class RacketListFragment extends Fragment {
         alertDialog.setTitle("Version");
 
         // Setting Dialog Message
+        //ApplicationInfo appInfo = getActivity().getApplicationInfo();
+        //String appName = (String) getActivity().getPackageManager().getApplicationLabel(appInfo);
+        //Log.d(TAG, "appName: " + appName);
+        //int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+        //Log.d(TAG, "versionCode: " + versionCode);
+        //Log.d(TAG, "versionName: " + versionName);
         alertDialog.setMessage("App Name: " + getString(R.string.app_name) + "\n" +
-                "Version: " + getString(R.string.app_version));
+                "Version: " + versionName);
 
         // Setting Icon to Dialog
         //alertDialog.setIcon(R.drawable.delete);

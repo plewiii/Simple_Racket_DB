@@ -19,6 +19,7 @@ import com.plew.android.simpleracketdb.R;
 import com.plew.android.simpleracketdb.UsageData;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -96,7 +97,8 @@ public class StrngDataArrayAdapter extends ArrayAdapter<StrngData> {
         for (UsageData c : mUsageDatas) {
             total_hours = total_hours + c.getHours();
         }
-        holder.txtView3.setText("Hours Played: " + String.valueOf(total_hours));
+        DecimalFormat df = new DecimalFormat("0.0");
+        holder.txtView3.setText("Hours Played: " + df.format(total_hours));   // String.valueOf(total_hours)
 
         // Return the completed view to render on screen
         return view;

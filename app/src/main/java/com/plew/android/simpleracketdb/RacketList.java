@@ -36,11 +36,11 @@ public class RacketList {
 
         try {
             mRackets = mSerializer.loadRackets();
-            Log.d(TAG, "RacketList(): mRackets.size():" + mRackets.size());
+            //Log.d(TAG, "RacketList(): mRackets.size():" + mRackets.size());
             for (int i = 0; i < mRackets.size(); i++) {
                 Racket c = mRackets.get(i);
                 int count = c.getStrngDatas().size();
-                Log.d(TAG, "RacketList(): racket(" + i + "): " + count);
+                //Log.d(TAG, "RacketList(): racket(" + i + "): " + count);
             }
         } catch (Exception e) {
             mRackets = new ArrayList<Racket>();
@@ -89,7 +89,7 @@ public class RacketList {
     public boolean saveRackets() {
         try {
             mSerializer.saveRackets(mRackets);
-            Log.d(TAG, "saveRackets()");
+            //Log.d(TAG, "saveRackets()");
             return true;
         } catch (Exception e) {
             Log.e(TAG, "Error saving Rackets: " + e);
@@ -109,7 +109,7 @@ public class RacketList {
             File path = mAppContext.getExternalFilesDir("");  // /mnt/sdcard/Android/data/com.plew.android.simpleracketdb/files
             String externalFilename = path + File.separator + FILENAME;
             mSerializer.exportRacketsJSON(mRackets, externalFilename);
-            Log.d(TAG, "exportRacketsJSON()");
+            //Log.d(TAG, "exportRacketsJSON()");
 
             return true;
         } catch (Exception e) {
@@ -138,11 +138,11 @@ public class RacketList {
                 }
 
                 mRackets = rackets;
-                Log.d(TAG, "importRacketsJSON(): mRackets.size():" + mRackets.size());
+                //Log.d(TAG, "importRacketsJSON(): mRackets.size():" + mRackets.size());
                 for (int i = 0; i < mRackets.size(); i++) {
                     Racket c = mRackets.get(i);
                     int count = c.getStrngDatas().size();
-                    Log.d(TAG, "importRacketsJSON(): racket(" + i + "): " + count);
+                    //Log.d(TAG, "importRacketsJSON(): racket(" + i + "): " + count);
                 }
                 return true;
             }
