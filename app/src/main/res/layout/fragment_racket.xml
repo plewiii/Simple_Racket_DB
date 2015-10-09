@@ -5,7 +5,7 @@
                 android:orientation="vertical"
                 tools:context=".RacketActivity$PlaceholderFragment">
 
-    <com.plew.android.common.tabview.SlidingTabLayout
+    <com.kollogic.android.common.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
