@@ -139,7 +139,7 @@ public class FilePickerDialog {
             // refresh the user interface
             dialog.setTitle((permTitle == null) ? currentPath.getPath() : permTitle);  // currentPath.getPath()
             list.setAdapter(new ArrayAdapter(activity,
-                    android.R.layout.simple_list_item_1, fileList) {
+                    R.layout.simple_dropdown_item_1line, fileList) {       // android.R.layout.simple_list_item_1
                 @Override public View getView(int pos, View view, ViewGroup parent) {
                     view = super.getView(pos, view, parent);
                     ((TextView) view).setSingleLine(true);
